@@ -1,0 +1,8 @@
+prefix=/home/tiva/catkin_ws/install
+
+Name: imagepublisher
+Description: Description of imagepublisher
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/tiva/catkin_ws/install/lib 
+Requires: 

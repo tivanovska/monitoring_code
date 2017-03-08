@@ -1,0 +1,8 @@
+prefix=/home/tiva/catkin_ws/devel
+
+Name: imagelistener
+Description: Description of imagelistener
+Version: 0.0.0
+Cflags: -I/home/tiva/catkin_ws/devel/include
+Libs: -L/home/tiva/catkin_ws/devel/lib 
+Requires: message_runtime

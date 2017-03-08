@@ -1,0 +1,39 @@
+FILE(REMOVE_RECURSE
+  "CMakeFiles/camera_control_msgs_generate_messages_py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabImagesActionFeedback.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabAndSaveImageFeedback.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabHDRImageGoal.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabHDRImageActionFeedback.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabAndSaveImageActionResult.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabAndSaveImageActionGoal.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabImagesAction.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabImagesGoal.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabAndSaveImageGoal.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabHDRImageActionGoal.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabImagesResult.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabImagesFeedback.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabImagesActionGoal.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabHDRImageResult.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabHDRImageFeedback.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabAndSaveImageResult.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabAndSaveImageAction.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabHDRImageAction.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabAndSaveImageActionFeedback.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabHDRImageActionResult.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/_GrabImagesActionResult.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/_SetSleeping.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/_SetBool.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/_SetBrightness.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/_SetExposure.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/_SetBinning.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/_SetGain.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/_SetGamma.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/_GetCamProperties.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/msg/__init__.py"
+  "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/camera_control_msgs/srv/__init__.py"
+)
+
+# Per-language clean rules from dependency scanning.
+FOREACH(lang)
+  INCLUDE(CMakeFiles/camera_control_msgs_generate_messages_py.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)
