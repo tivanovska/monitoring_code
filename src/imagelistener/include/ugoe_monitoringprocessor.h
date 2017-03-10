@@ -41,48 +41,50 @@ using namespace cv::xfeatures2d;
 
 class Monitoring
 {
-    // path to directory, where template files are stored
-    std::string path_to_templates;
-    // px to mm ratio coefficient (e.g. 100 px = 2mm , then coefficient 0.02
-    // and a new measurement d (in px) -> d*coefficient (mm))
-    float px_to_mm_coef;
-public:
+  // path to directory, where template files are stored
+  std::string path_to_templates;
+  // px to mm ratio coefficient (e.g. 100 px = 2mm , then coefficient 0.02
+  // and a new measurement d (in px) -> d*coefficient (mm))
+  float px_to_mm_coef;
+
+
+  public:
   // constructors and destructor
   Monitoring(std::string path_, float ratio_): 
-                      path_to_templates(path_),
-                      px_to_mm_coef(ratio_) {}
+    path_to_templates(path_),
+    px_to_mm_coef(ratio_) {}
   Monitoring(){
-  path_to_templates = "";
-  px_to_mm_coef = 0.0;
+    path_to_templates = "";
+    px_to_mm_coef = 0.0;
   }              
   ~Monitoring() {}
   // setters and getters for path_to_templates
   void set_path_to_templates(std::string const & s_) {path_to_templates= s_;}
   std::string const & get_path_to_templates() {return path_to_templates;}
-  
+
   //setters and getters for px_to_mm_coef
   void set_px_to_mm_coef (float const & c_) {px_to_mm_coef = c_;}
   float const & get_px_to_mm_coef() {return px_to_mm_coef;}
 
   /*
-  *  finds a template with the name template_id.png in path_to_templates
-  *  if path is not set or no such file -> throws exception
-  */
+   *  finds a template with the name template_id.png in path_to_templates
+   *  if path is not set or no such file -> throws exception
+   */
   void find_template(int template_id, cv::Mat & template_found);
 
   /*
-  *  main monitoring function 
-  *  receives a request and returns a response
-  */
+   *  main monitoring function 
+   *  receives a request and returns a response
+   */
   void execute_monitoring(imagelistener::exampleImageProcessing:: Request & req,
-                          imagelistener::exampleImageProcessing:: Response &
-                          res); 
+      imagelistener::exampleImageProcessing:: Response &
+      res); 
 
 
 
 
 
-    
+
 };
 
 

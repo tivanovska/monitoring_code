@@ -7,6 +7,7 @@
 #include <sstream> 
 #include <time.h>
 #include "boost/date_time/posix_time/posix_time.hpp" //include all types plus i/o
+#include "boost/filesystem.hpp"
 #include "imagelistener/exampleImageProcessing.h"
 #include "ugoe_monitoringprocessor.h"
 
@@ -19,20 +20,46 @@ class ImageConverter
   image_transport::ImageTransport it_;
   image_transport::Subscriber image_sub_;
   ros:: ServiceServer  processInputImageServer_;
- // image_transport::Publisher image_pub_;
   cv_bridge::CvImagePtr cv_ptr;
+  
+  int mode;
+  std::string path_to_images;
 public:
-  ImageConverter()
-    : it_(nh_)
+  ImageConverter(int mode_, std::string str_="")
+    : it_(nh_), mode(mode_), path_to_images(str_)
   {
-    // Subscrive to input video feed and publish output video feed
-   // image_sub_ = it_.subscribe("/pylon_camera_node/image_raw", 1, 
-    //  &ImageConverter::imageCb, this);
-    // to do this first run  ROS_NAMESPACE=pylon_camera_node rosrun image_proc image_proc
-    
-    image_sub_ = it_.subscribe("/pylon_camera_node/image_color", 1, &ImageConverter::streamCallback, this);
+    if(mode_ == 0)
+    {
+      ROS_INFO ("Real measurement mode. Subscribing to pylon_camera_node...");
+
+      // Subscrive to input video feed and publish output video feed
+      // to do this first run  ROS_NAMESPACE=pylon_camera_node rosrun image_proc image_proc
+
+      image_sub_ = it_.subscribe("/pylon_camera_node/image_color", 1, &ImageConverter::streamCallback, this);
+    }
+    else
+    {
+      ROS_INFO ("Emulator mode. Reading images from harddrive...");
+      boost::filesystem::path path(str_);
+      try
+      {
+           if( boost::filesystem::exists(path) && boost::filesystem::is_directory(path))
+           {
+                ROS_INFO("Emulator mode. Path for image files exists!");
+           }
+           else
+           {
+             ROS_ERROR_STREAM( "The path for image files is incorrect!");
+           }
+      }
+      catch (const boost::filesystem::filesystem_error& ex)
+      {
+        ROS_ERROR_STREAM( ex.what() << '\n');
+      }
+
+    }
     processInputImageServer_= nh_.advertiseService("/imagelistener_node_server/image_monitoring",&ImageConverter::monitoringCallback, this);
-  //  image_pub_ = it_.advertise("/image_converter/output_video", 1);
+    //  image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
     cv::namedWindow(OPENCV_WINDOW,CV_WINDOW_NORMAL);
   }
@@ -56,8 +83,29 @@ public:
       ros::Time request_time = ros::Time::now();
       boost::posix_time::ptime thistime = request_time.toBoost();
       std::string str_time = boost::posix_time::to_simple_string(thistime);
-      cv::Mat currentImage = cv_ptr->image;
+      
       ROS_INFO ("request came at: %s", str_time.c_str());
+      
+      cv::Mat currentImage;    
+      if(mode == 0) // getting the image from the stream
+      {
+        ROS_INFO("real mode... getting image frame from pylon_camera stream");
+        currentImage = cv_ptr->image;
+      }
+      else
+      {
+        boost::filesystem::path p(path_to_images);
+        ROS_INFO("emulation mode read the first found image from the given path");
+        boost::filesystem::directory_iterator end_iter;
+        for (boost::filesystem::directory_iterator dir_itr(p); dir_itr != end_iter; ++dir_itr)
+        {
+          if (boost::filesystem::is_regular_file(dir_itr->status()))
+          {
+            currentImage = cv::imread(dir_itr->path().filename().string(), CV_LOAD_IMAGE_COLOR);
+            break;
+          }
+        }
+      }
       res.Im_Width = currentImage.cols;
       res.Im_Height = currentImage.rows;
       res.Mon_result.operation_type = (long int)req.ID_Operation;
@@ -121,7 +169,7 @@ public:
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "monitoring_server");
-  ImageConverter ic;
+  ImageConverter ic(0,"~/catkin_ws/imgs/");
   ros::spin();
   return 0;
 }

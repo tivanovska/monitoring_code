@@ -104,19 +104,31 @@ opencv2/core/utility.hpp
 imagelistener/exampleImageProcessing.h
 /home/tiva/catkin_ws/src/imagelistener/include/imagelistener/exampleImageProcessing.h
 
-/home/tiva/catkin_ws/src/imagelistener/src/ugoe_monitoringprocessor.cpp
-ugoe_monitoringprocessor.h
-/home/tiva/catkin_ws/src/imagelistener/src/ugoe_monitoringprocessor.h
-string
--
-boost/filesystem.hpp
-/home/tiva/catkin_ws/src/imagelistener/src/boost/filesystem.hpp
+/home/tiva/catkin_ws/src/imagelistener/src/imagelistener_node.cpp
 ros/ros.h
 -
-boost/lexical_cast.hpp
+image_transport/image_transport.h
 -
-iostream
+cv_bridge/cv_bridge.h
 -
+sensor_msgs/image_encodings.h
+-
+opencv2/imgproc/imgproc.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+sstream
+-
+time.h
+-
+boost/date_time/posix_time/posix_time.hpp
+/home/tiva/catkin_ws/src/imagelistener/src/boost/date_time/posix_time/posix_time.hpp
+boost/filesystem.hpp
+/home/tiva/catkin_ws/src/imagelistener/src/boost/filesystem.hpp
+imagelistener/exampleImageProcessing.h
+/home/tiva/catkin_ws/src/imagelistener/src/imagelistener/exampleImageProcessing.h
+ugoe_monitoringprocessor.h
+/home/tiva/catkin_ws/src/imagelistener/src/ugoe_monitoringprocessor.h
 
 /home/tiva/opencv/build/opencv2/opencv_modules.hpp
 
@@ -906,6 +918,10 @@ opencv2/videoio.hpp
 opencv2/highgui/highgui_c.h
 /home/tiva/opencv/modules/highgui/include/opencv2/opencv2/highgui/highgui_c.h
 
+/home/tiva/opencv/modules/highgui/include/opencv2/highgui/highgui.hpp
+opencv2/highgui.hpp
+/home/tiva/opencv/modules/highgui/include/opencv2/highgui/opencv2/highgui.hpp
+
 /home/tiva/opencv/modules/highgui/include/opencv2/highgui/highgui_c.h
 opencv2/core/core_c.h
 /home/tiva/opencv/modules/highgui/include/opencv2/highgui/opencv2/core/core_c.h
@@ -959,6 +975,10 @@ opencv2/highgui.hpp
 /home/tiva/opencv/modules/imgproc/include/opencv2/opencv2/highgui.hpp
 opencv2/imgproc/imgproc_c.h
 /home/tiva/opencv/modules/imgproc/include/opencv2/opencv2/imgproc/imgproc_c.h
+
+/home/tiva/opencv/modules/imgproc/include/opencv2/imgproc/imgproc.hpp
+opencv2/imgproc.hpp
+/home/tiva/opencv/modules/imgproc/include/opencv2/imgproc/opencv2/imgproc.hpp
 
 /home/tiva/opencv/modules/imgproc/include/opencv2/imgproc/imgproc_c.h
 opencv2/imgproc/types_c.h
