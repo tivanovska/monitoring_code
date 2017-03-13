@@ -109,6 +109,7 @@ public:
       }
       if(!currentImage.empty())
       {
+        Monitoring mon;
         res.Im_Width = currentImage.cols;
         res.Im_Height = currentImage.rows;
         res.Mon_result.operation_type = (long int)req.ID_Operation;
