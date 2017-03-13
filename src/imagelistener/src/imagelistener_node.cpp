@@ -101,19 +101,22 @@ public:
         {
           if (boost::filesystem::is_regular_file(dir_itr->status()))
           {
-            currentImage = cv::imread(dir_itr->path().filename().string(), CV_LOAD_IMAGE_COLOR);
+            ROS_INFO("Filename: %s", dir_itr->path().string().c_str());
+            currentImage = cv::imread(dir_itr->path().string(), CV_LOAD_IMAGE_COLOR);
             break;
           }
         }
       }
-      res.Im_Width = currentImage.cols;
-      res.Im_Height = currentImage.rows;
-      res.Mon_result.operation_type = (long int)req.ID_Operation;
-      cv::namedWindow(OPENCV_CURRENT,CV_WINDOW_NORMAL);
-      cv::imshow(OPENCV_CURRENT, currentImage);
-      //ROS_ASSERT( cv::imwrite( sstream.str(),  cv_ptr->image ) );
-      cv::waitKey(0);
-      cv::destroyWindow(OPENCV_CURRENT);
+      if(!currentImage.empty())
+      {
+        res.Im_Width = currentImage.cols;
+        res.Im_Height = currentImage.rows;
+        res.Mon_result.operation_type = (long int)req.ID_Operation;
+        /*cv::namedWindow(OPENCV_CURRENT,CV_WINDOW_NORMAL);
+        cv::imshow(OPENCV_CURRENT, currentImage);
+        cv::waitKey(0);
+        cv::destroyWindow(OPENCV_CURRENT);*/
+      }
 
 
 
@@ -169,7 +172,7 @@ public:
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "monitoring_server");
-  ImageConverter ic(0,"~/catkin_ws/imgs/");
+  ImageConverter ic(1,"/home/tiva/catkin_ws/imgs");
   ros::spin();
   return 0;
 }
