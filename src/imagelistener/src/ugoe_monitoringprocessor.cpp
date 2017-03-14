@@ -74,7 +74,7 @@ void  Monitoring:: execute_monitoring(
 
         if(maxVal>0.8)
         {
-          ROS_INFO("Template is detected!");
+          ROS_INFO("Template is detected! Start comparison according to the operation sent...");
           
           cv::Rect r (matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
           cv::Mat roi = img_display(r).clone();
@@ -88,22 +88,30 @@ void  Monitoring:: execute_monitoring(
         if(maxVal<=0.8&& maxVal>0.5)
         {
             ROS_INFO("Template is found, but the detail is probably  damaged");
+            res.Im_Width = current_image.cols;
+            res.Im_Height = current_image.rows;
+            res.Mon_result.operation_type = (long int)req.ID_Operation;
+            res.Mon_result.detail_detected = 1;
+            res.Mon_result.detail_ok = 0;
         }
         else
         {
-            ROS_ERROR("No template is present in the image!!!");
+          ROS_ERROR("No template is present in the image!!!");
+          res.Im_Width = -1;
+          res.Im_Height = -1;
+          res.Mon_result.operation_type = (long int)req.ID_Operation;
+          res.Mon_result.detail_detected = -1;
+
         }
 
-
-        /// Show me what you got
-      /*        cv::destroyWindow("MatchingResult");
-
-        */
       }
       else
       {
-        std::cout<< "Template image is not found!"<<std::endl;
+        ROS_ERROR("Template image is not found!");
+        res.Im_Width = -1;
+        res.Im_Height = -1;
+        res.Mon_result.operation_type = (long int)req.ID_Operation;
+        res.Mon_result.detail_detected = -1;
       }
-
 }
 

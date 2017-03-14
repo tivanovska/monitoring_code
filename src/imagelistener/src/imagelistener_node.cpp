@@ -114,10 +114,7 @@ public:
         mon.set_path_to_templates("/home/tiva/catkin_ws/templates_elvez_ugoe");
         mon.execute_monitoring(req,res,currentImage);
 
-        res.Im_Width = currentImage.cols;
-        res.Im_Height = currentImage.rows;
-        res.Mon_result.operation_type = (long int)req.ID_Operation;
-        /*cv::namedWindow(OPENCV_CURRENT,CV_WINDOW_NORMAL);
+             /*cv::namedWindow(OPENCV_CURRENT,CV_WINDOW_NORMAL);
         cv::imshow(OPENCV_CURRENT, currentImage);
         cv::waitKey(0);
         cv::destroyWindow(OPENCV_CURRENT);*/
