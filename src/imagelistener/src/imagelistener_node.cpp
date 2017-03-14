@@ -109,7 +109,11 @@ public:
       }
       if(!currentImage.empty())
       {
+        // call monitoring function
         Monitoring mon;
+        mon.set_path_to_templates("/home/tiva/catkin_ws/templates_elvez_ugoe");
+        mon.execute_monitoring(req,res,currentImage);
+
         res.Im_Width = currentImage.cols;
         res.Im_Height = currentImage.rows;
         res.Mon_result.operation_type = (long int)req.ID_Operation;

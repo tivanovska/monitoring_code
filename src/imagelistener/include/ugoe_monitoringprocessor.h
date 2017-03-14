@@ -77,8 +77,8 @@ class Monitoring
    *  receives a request and returns a response
    */
   void execute_monitoring(imagelistener::exampleImageProcessing:: Request & req,
-      imagelistener::exampleImageProcessing:: Response &
-      res); 
+                          imagelistener::exampleImageProcessing:: Response & res, 
+                          cv::Mat & current_image); 
 
 
 
