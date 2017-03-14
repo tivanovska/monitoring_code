@@ -60,27 +60,26 @@ void  Monitoring:: execute_monitoring(
         result.create( result_rows, result_cols, CV_32FC1 );
 
         /// Do the Matching and Normalize
-        matchTemplate( current_image, templ_image, result, CV_TM_SQDIFF_NORMED );
-        normalize( result, result, 0, 1, NORM_MINMAX, -1, Mat() );
+        matchTemplate( current_image, templ_image, result, CV_TM_CCOEFF_NORMED );
+       // normalize( result, result, 0, 1, NORM_MINMAX, -1, Mat() );
 
         /// Localizing the best match with minMaxLoc
         double minVal; double maxVal; Point minLoc; Point maxLoc;
         Point matchLoc;
 
         minMaxLoc( result, &minVal, &maxVal, &minLoc, &maxLoc, Mat() );
-        matchLoc = minLoc;
-        /// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-      //  if( match_method  == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED )
-        //{ matchLoc = minLoc; }
-       // else
-       // { matchLoc = maxLoc; }
+        matchLoc = maxLoc;
+        std::cout<<"Max val matching:" <<maxVal<< " Min val matching:"<< minVal << std::endl;
+        std::cout<<"Match loc:[x,y]:"<<matchLoc.x<<" "<<matchLoc.y<<std::endl;
 
         /// Show me what you got
-         rectangle( img_display, matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ), CV_RGB(255, 255, 255), 0.5 );
+        rectangle( img_display, matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ), CV_RGB(255, 255, 255), 0.5 );
         cv::namedWindow("MatchingResult",CV_WINDOW_NORMAL);
         cv::imshow("MatchingResult", img_display);
         cv::waitKey(0);
-        cv::destroyWindow("MatchingResult");
+/*        cv::destroyWindow("MatchingResult");
+
+        */
       }
       else
       {
