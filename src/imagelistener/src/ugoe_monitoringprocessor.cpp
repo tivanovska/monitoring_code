@@ -72,12 +72,31 @@ void  Monitoring:: execute_monitoring(
         std::cout<<"Max val matching:" <<maxVal<< " Min val matching:"<< minVal << std::endl;
         std::cout<<"Match loc:[x,y]:"<<matchLoc.x<<" "<<matchLoc.y<<std::endl;
 
+        if(maxVal>0.8)
+        {
+          ROS_INFO("Template is detected!");
+          
+          cv::Rect r (matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
+          cv::Mat roi = img_display(r).clone();
+/*          rectangle( img_display, matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ), CV_RGB(255, 255, 255), 0.5 );*/
+      //    cv::namedWindow("MatchingResult",CV_WINDOW_NORMAL);
+      //    cv::imshow("MatchingResult", roi);
+      //    cv::waitKey(0);
+
+        }
+        else
+        if(maxVal<=0.8&& maxVal>0.5)
+        {
+            ROS_INFO("Template is found, but the detail is probably  damaged");
+        }
+        else
+        {
+            ROS_ERROR("No template is present in the image!!!");
+        }
+
+
         /// Show me what you got
-        rectangle( img_display, matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ), CV_RGB(255, 255, 255), 0.5 );
-        cv::namedWindow("MatchingResult",CV_WINDOW_NORMAL);
-        cv::imshow("MatchingResult", img_display);
-        cv::waitKey(0);
-/*        cv::destroyWindow("MatchingResult");
+      /*        cv::destroyWindow("MatchingResult");
 
         */
       }
