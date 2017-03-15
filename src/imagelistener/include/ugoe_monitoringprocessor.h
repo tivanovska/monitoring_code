@@ -59,7 +59,7 @@ class Monitoring
    // Contrast Limited Adaptive Histogram Equalization
    void CLAHE_HistEq(cv::Mat& img_, cv::Mat & out_);
    // blurring wrapper
-   void blurring(cv::Mat in_, cv::Mat out_, int size, int alg);
+   void blurring(cv::Mat & in_, cv::Mat & out_, int size, int alg);
    // median for each channel in image
    cv::Scalar median (cv::Mat & image);
    // autocanny : http://www.pyimagesearch.com/2015/04/06/zero-parameter-automatic-canny-edge-detection-with-python-and-opencv/

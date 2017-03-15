@@ -41,9 +41,12 @@
     */
 void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imagelistener::exampleImageProcessing:: Response & res)
 {
-  // startWindowThread();
-   cv::imshow("vision", roi);
-   cv::waitKey(0);
+
+  cv::Mat tmp;
+  CLAHE_HistEq(roi, tmp);
+  autoCanny(tmp, tmp);
+  cv::imshow("vision", tmp);
+  cv::waitKey(0);
    //cv::destroyWindow("view_roi");
  //  cv::imshow("view_templ",templ);
 //   cv::waitKey(0);
@@ -163,7 +166,7 @@ void Monitoring::CLAHE_HistEq(cv::Mat& img_, cv::Mat & out_)
 //---------------------------------------------------------------------------------------------
 // blurring
 
-void Monitoring::blurring(cv::Mat in_, cv::Mat out_, int size, int alg)
+void Monitoring::blurring(cv::Mat& in_, cv::Mat& out_, int size, int alg)
 {
   switch(alg)
   {
@@ -196,6 +199,9 @@ void Monitoring::autoCanny(cv::Mat& img_, cv::Mat & out_)
  
 	int lower = int(std::max(0.0, (1.0 - 0.33) * v[0]));
 	int upper = int(std::min(255.0, (1.0 + 0.33) * v[0]));
+  std::cout<< lower <<" "<< upper<<std::endl;
+//  int lower = 100;
+//  int upper = 200;
   cv::Canny( blurred, out_, lower, upper, 3 );
 }
 
@@ -223,9 +229,11 @@ cv::Scalar Monitoring::median (cv::Mat & image)
   cv::split( image, channels );
   for (size_t i = 0; i< channels.size();++i)
   {
-    cv::calcHist( &channels[i], 1, 0, cv::Mat(), hists[i], 1, &histSize, &histRange, uniform, accumulate );
+    cv::Mat hist;
+    cv::calcHist( &channels[i], 1, 0, cv::Mat(), hist, 1, &histSize, &histRange, uniform, accumulate );
+    hists.push_back(hist);
   }
-  
+
   bool flag = true;
   for (int i=0; i<256 && flag;i++)
   {
