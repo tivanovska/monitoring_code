@@ -34,6 +34,22 @@
    }
  }
 
+ /*
+    * this function is called if the template is found in the current image
+    *  according to the operation_id the correspondent analysis routines are called 
+    *
+    */
+void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imagelistener::exampleImageProcessing:: Response & res)
+{
+  // startWindowThread();
+   cv::imshow("vision", roi);
+   cv::waitKey(0);
+   //cv::destroyWindow("view_roi");
+ //  cv::imshow("view_templ",templ);
+//   cv::waitKey(0);
+}
+
+
 
 /*
 * implementation of the main monitoring function
@@ -78,6 +94,7 @@ void  Monitoring:: execute_monitoring(
           
           cv::Rect r (matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
           cv::Mat roi = img_display(r).clone();
+          analyzeROI(roi, templ_image, req.ID_Operation, res);
 /*          rectangle( img_display, matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ), CV_RGB(255, 255, 255), 0.5 );*/
       //    cv::namedWindow("MatchingResult",CV_WINDOW_NORMAL);
       //    cv::imshow("MatchingResult", roi);
@@ -114,4 +131,118 @@ void  Monitoring:: execute_monitoring(
         res.Mon_result.detail_detected = -1;
       }
 }
+
+
+//-------------------------------------------------------------------------------------------
+// OpenCV routine wrappers
+
+// Histogram equalization
+void Monitoring::CLAHE_HistEq(cv::Mat& img_, cv::Mat & out_)
+{
+  cv::Mat lab_image;
+  cv::cvtColor(img_, lab_image, CV_BGR2Lab);
+
+  // Extract the L channel
+  std::vector<cv::Mat> lab_planes(3);
+  cv::split(lab_image, lab_planes);  // now we have the L image in lab_planes[0]
+
+  // apply the CLAHE algorithm to the L channel
+  cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
+  clahe->setClipLimit(4);
+  cv::Mat dst;
+  clahe->apply(lab_planes[0], dst);
+
+  // Merge the the color planes back into an Lab image
+  dst.copyTo(lab_planes[0]);
+  cv::merge(lab_planes, lab_image);
+
+  // convert back to RGB
+  cv::Mat image_clahe;
+  cv::cvtColor(lab_image, out_, CV_Lab2BGR);
+}
+//---------------------------------------------------------------------------------------------
+// blurring
+
+void Monitoring::blurring(cv::Mat in_, cv::Mat out_, int size, int alg)
+{
+  switch(alg)
+  {
+      case 1:  // Homogeneous blur
+        cv::blur( in_, out_, Size( size, size ), Point(-1,-1));
+        break;
+      case 2: // Gaussian blur
+        cv::GaussianBlur(in_, out_, Size( size, size ), 0, 0 );
+        break;
+      case 3: // Median blur
+        cv::medianBlur ( in_, out_, size );
+        break;
+      case 4: // Bilateral filter
+        cv::bilateralFilter ( in_, out_, size, size*2, size/2 );
+        break;
+      case 5: //nl means denoising
+        cv::fastNlMeansDenoising(in_, out_, 3, size);
+        break;
+  }
+}
+//------------------------------------------------------------------------------------------
+// auto canny (no parameters)
+void Monitoring::autoCanny(cv::Mat& img_, cv::Mat & out_)
+{
+	cv::Mat gray;
+  cv::Mat blurred;
+  cv::cvtColor(img_, gray, cv::COLOR_BGR2GRAY);
+  blurring(gray,blurred,3,2);
+  cv::Scalar	v = median(blurred);
+ 
+	int lower = int(std::max(0.0, (1.0 - 0.33) * v[0]));
+	int upper = int(std::min(255.0, (1.0 + 0.33) * v[0]));
+  cv::Canny( blurred, out_, lower, upper, 3 );
+}
+
+//--------------------------------------------------------------------------------------------
+// return median value for each channel of image
+cv::Scalar Monitoring::median (cv::Mat & image)
+{
+  int ch = image.channels();
+  double m=(image.rows*image.cols)/2;
+  std::vector<int> bins;
+
+  cv::Scalar med;
+  for(int i = 0; i<ch;++i)
+  {
+    med.val[i]=-1;
+    bins.push_back(0);
+  }
+  int histSize = 256;
+  float range[] = { 0, 256 } ;
+  const float* histRange = { range };
+  bool uniform = true;
+  bool accumulate = false;
+  std::vector<cv::Mat> hists;
+  std::vector<cv::Mat> channels;
+  cv::split( image, channels );
+  for (size_t i = 0; i< channels.size();++i)
+  {
+    cv::calcHist( &channels[i], 1, 0, cv::Mat(), hists[i], 1, &histSize, &histRange, uniform, accumulate );
+  }
+  
+  bool flag = true;
+  for (int i=0; i<256 && flag;i++)
+  {
+    for(int j = 0; j<ch;++j)
+    {
+      if (med.val[j]>=0) 
+        {
+          flag = false;
+          break;
+        }
+      bins[j] = bins[j]+ cvRound(hists[j].at<float>(i));  
+      if(bins[j]>m && med.val[j]<0)
+          med.val[j] = i;
+    }
+  }
+
+  return med;
+}
+
 

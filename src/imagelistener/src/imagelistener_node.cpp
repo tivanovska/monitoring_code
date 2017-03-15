@@ -21,6 +21,7 @@ class ImageConverter
   image_transport::Subscriber image_sub_;
   ros:: ServiceServer  processInputImageServer_;
   cv_bridge::CvImagePtr cv_ptr;
+  std::string cv_window_name = "vision";
   
   int mode;
   std::string path_to_images;
@@ -58,15 +59,16 @@ public:
       }
 
     }
+    cv::namedWindow(cv_window_name,CV_WINDOW_NORMAL);
     processInputImageServer_= nh_.advertiseService("/imagelistener_node_server/image_monitoring",&ImageConverter::monitoringCallback, this);
     //  image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
-    cv::namedWindow(OPENCV_WINDOW,CV_WINDOW_NORMAL);
+   // cv::namedWindow(OPENCV_WINDOW,CV_WINDOW_NORMAL);
   }
 
   ~ImageConverter()
   {
-    cv::destroyWindow(OPENCV_WINDOW);
+    //cv::destroyWindow(OPENCV_WINDOW);
   }
     
   /*
@@ -176,5 +178,6 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "monitoring_server");
   ImageConverter ic(1,"/home/tiva/catkin_ws/imgs");
   ros::spin();
+  cv::destroyAllWindows();
   return 0;
 }

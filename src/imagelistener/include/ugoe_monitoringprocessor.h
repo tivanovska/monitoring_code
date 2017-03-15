@@ -20,7 +20,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/video/background_segm.hpp>
-
+#include <opencv2/opencv.hpp>
 
 #include <opencv2/shape.hpp>
 #include <opencv2/core/utility.hpp>
@@ -46,8 +46,28 @@ class Monitoring
   // px to mm ratio coefficient (e.g. 100 px = 2mm , then coefficient 0.02
   // and a new measurement d (in px) -> d*coefficient (mm))
   float px_to_mm_coef;
+  
+   /*
+    * this function is called if the template is found in the current image
+    *  according to the operation_id the correspondent analysis routines are called 
+    *
+    */
+   void analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imagelistener::exampleImageProcessing:: Response & res);
+
+   // OpenCV routines for analysis of images, wrappers to be used in ReconCell
+   //------------------------------------------------------------------------------------------------------------------
+   // Contrast Limited Adaptive Histogram Equalization
+   void CLAHE_HistEq(cv::Mat& img_, cv::Mat & out_);
+   // blurring wrapper
+   void blurring(cv::Mat in_, cv::Mat out_, int size, int alg);
+   // median for each channel in image
+   cv::Scalar median (cv::Mat & image);
+   // autocanny : http://www.pyimagesearch.com/2015/04/06/zero-parameter-automatic-canny-edge-detection-with-python-and-opencv/
+   void autoCanny(cv::Mat& img_, cv::Mat & out_);
 
 
+
+  //-------------------------------------------------------------------------------------------------------------------
   public:
   // constructors and destructor
   Monitoring(std::string path_, float ratio_): 
@@ -78,10 +98,8 @@ class Monitoring
    */
   void execute_monitoring(imagelistener::exampleImageProcessing:: Request & req,
                           imagelistener::exampleImageProcessing:: Response & res, 
-                          cv::Mat & current_image); 
-
-
-
+                          cv::Mat & current_image);
+  
 
 
 
