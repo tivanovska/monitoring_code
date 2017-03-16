@@ -41,16 +41,102 @@
     */
 void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imagelistener::exampleImageProcessing:: Response & res)
 {
+  if(op_id == 1) // analyze black ball 
+  {
+    // detect  roi characteristics
+    cv::RNG rng(12345);
+    cv::Mat tmp;
+    CLAHE_HistEq(roi, tmp);
+    cvtColor(tmp, tmp, CV_BGR2HSV);
+    cv::inRange(tmp, cv::Scalar(0, 0, 0, 0), cv::Scalar(180, 255, 30, 0), tmp);
+    std::vector<std::vector<cv::Point> > contours;
+    std::vector<cv::Vec4i> hierarchy;
+    findContours(tmp, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
 
-  cv::Mat tmp;
-  CLAHE_HistEq(roi, tmp);
-  autoCanny(tmp, tmp);
-  cv::imshow("vision", tmp);
-  cv::waitKey(0);
-   //cv::destroyWindow("view_roi");
- //  cv::imshow("view_templ",templ);
-//   cv::waitKey(0);
+    double la = -1;
+    int lci = 0;
+    cv:: Rect bounding_rect;
+    for( size_t i = 0; i< contours.size(); ++i ) // iterate through each contour. 
+    {
+      double a=cv::contourArea( contours[i],false);  //  Find the area of contour
+      if(a>la){
+        la=a;
+        lci=i;                //Store the index of largest contour
+        bounding_rect=cv::boundingRect(contours[i]); // Find the bounding rectangle for biggest contour
+      }
+    }
+    /// Draw contours
+    tmp = cv::Mat::zeros( tmp.size(), CV_8UC3 );
+    Scalar color = cv::Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+    cv::drawContours( tmp, contours, lci, color, 2, 8, hierarchy, 0, Point() );
+    cv::rectangle(tmp, bounding_rect,  Scalar(0,255,0),1, 8,0);  
+    std::vector<cv::Point> convexHullPoints =  contoursConvexHull(contours, lci);
+    polylines( tmp, convexHullPoints, true, Scalar(0,0,255), 2 );
+    //----------------------------------------------------------------------------------------------------
+   cv::Mat tmp_temp;
+    CLAHE_HistEq(templ, tmp_temp);
+    cvtColor(tmp_temp, tmp_temp, CV_BGR2HSV);
+    cv::inRange(tmp_temp, cv::Scalar(0, 0, 0, 0), cv::Scalar(180, 255, 30, 0), tmp_temp);
+    std::vector<std::vector<cv::Point> > contours_temp;
+    std::vector<cv::Vec4i> hierarchy_temp;
+    findContours(tmp_temp, contours_temp, hierarchy_temp, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+
+    double la_temp = -1;
+    int lci_temp = 0;
+    cv:: Rect bounding_rect_temp;
+    for( size_t i = 0; i< contours_temp.size(); ++i ) // iterate through each contour. 
+    {
+      double a=cv::contourArea( contours_temp[i],false);  //  Find the area of contour
+      if(a>la_temp)
+      {
+        la_temp=a;
+        lci_temp=i;                //Store the index of largest contour
+        bounding_rect_temp=cv::boundingRect(contours_temp[i]); // Find the bounding rectangle for biggest contour
+      }
+    }
+    /// Draw contours
+    tmp_temp = cv::Mat::zeros( tmp_temp.size(), CV_8UC3 );
+    Scalar color_temp = cv::Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+    cv::drawContours( tmp_temp, contours_temp, lci_temp, color_temp, 2, 8, hierarchy_temp, 0, Point() );
+    cv::rectangle(tmp_temp, bounding_rect_temp,  Scalar(0,255,0),1, 8,0);  
+    std::vector<cv::Point> convexHullPoints_temp =  contoursConvexHull(contours_temp, lci_temp);
+    polylines( tmp_temp, convexHullPoints_temp, true, Scalar(0,0,255), 2 );
+
+
+
+    cv::imshow("vision roi", tmp);
+    cv::waitKey(0);
+
+    cv::imshow("vision template", tmp_temp);
+    cv::waitKey(0);
+  }
 }
+
+/*
+* convex hull from the contour points
+* index is the contour index, for which we want to build the convex hull
+*/
+
+std::vector<cv::Point> Monitoring::contoursConvexHull( std::vector<std::vector<cv::Point> > & contours, size_t index )
+{
+    
+  std::vector<cv::Point> result;
+  std::vector<cv::Point> pts;
+  if(index>0 && index< contours.size())
+  {
+    for ( size_t j = 0; j< contours[index].size(); j++)
+      pts.push_back(contours[index][j]);
+  }
+  else
+  {
+    for ( size_t i = 0; i< contours.size(); i++)
+      for ( size_t j = 0; j< contours[i].size(); j++)
+        pts.push_back(contours[i][j]);
+  }
+  cv::convexHull( pts, result );
+  return result;
+}
+
 
 
 
@@ -194,15 +280,29 @@ void Monitoring::autoCanny(cv::Mat& img_, cv::Mat & out_)
 	cv::Mat gray;
   cv::Mat blurred;
   cv::cvtColor(img_, gray, cv::COLOR_BGR2GRAY);
-  blurring(gray,blurred,3,2);
+  blurring(gray,blurred,11,2);
   cv::Scalar	v = median(blurred);
- 
-	int lower = int(std::max(0.0, (1.0 - 0.33) * v[0]));
-	int upper = int(std::min(255.0, (1.0 + 0.33) * v[0]));
+  cv::RNG rng(12345);
+  float sigma = 0.55;//0.33;
+	int lower = int(std::max(0.0, (1.0 - sigma) * v[0]));
+	int upper = int(std::min(255.0, (1.0 + sigma) * v[0]));
   std::cout<< lower <<" "<< upper<<std::endl;
 //  int lower = 100;
 //  int upper = 200;
-  cv::Canny( blurred, out_, lower, upper, 3 );
+  std::vector<std::vector<cv::Point> > contours;
+  std::vector<cv::Vec4i> hierarchy;
+
+  cv::Canny( blurred, blurred, lower, upper, 3 );
+  /// Find contours
+  cv::findContours( blurred, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+
+  /// Draw contours
+  out_ = cv::Mat::zeros( blurred.size(), CV_8UC3 );
+  for( size_t i = 0; i< contours.size(); i++ )
+  {
+    Scalar color = cv::Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+    cv::drawContours( out_, contours, i, color, 2, 8, hierarchy, 0, Point() );
+  }
 }
 
 //--------------------------------------------------------------------------------------------

@@ -64,6 +64,9 @@ class Monitoring
    cv::Scalar median (cv::Mat & image);
    // autocanny : http://www.pyimagesearch.com/2015/04/06/zero-parameter-automatic-canny-edge-detection-with-python-and-opencv/
    void autoCanny(cv::Mat& img_, cv::Mat & out_);
+   // build convex hull from contour points
+   std::vector<cv::Point> contoursConvexHull( std::vector<std::vector<cv::Point> > & contours, size_t index);
+   
 
 
 
