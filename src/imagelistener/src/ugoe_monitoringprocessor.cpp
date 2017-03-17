@@ -47,11 +47,49 @@ void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imageli
     cv::RNG rng(12345);
     cv::Mat tmp;
     CLAHE_HistEq(roi, tmp);
-    cvtColor(tmp, tmp, CV_BGR2HSV);
-    cv::inRange(tmp, cv::Scalar(0, 0, 0, 0), cv::Scalar(180, 255, 30, 0), tmp);
+   // cvtColor(tmp, tmp, CV_BGR2HSV);
+    //Mat hsv[3];   //destination array
+    //cv::split(tmp,hsv);//split source  
+   // cv::imshow("vision hsv[0]", hsv[0]);
+   // cv::waitKey(0);
+   // cv::imshow("vision hsv[1]", hsv[1]);
+   // cv::waitKey(0);
+   // cv::imshow("vision hsv[2]", hsv[2]);
+   // cv::waitKey(0);
+    // Create a kernel that we will use for accuting/sharpening our image
+  /*  cv::Mat kernel = (cv::Mat_<float>(3,3) <<
+            1,  1, 1,
+            1, -8, 1,
+            1,  1, 1); // an approximation of second derivative, a quite strong kernel
+    // do the laplacian filtering as it is
+    // well, we need to convert everything in something more deeper then CV_8U
+    // because the kernel has some negative values,
+    // and we can expect in general to have a Laplacian image with negative values
+    // BUT a 8bits unsigned int (the one we are working with) can contain values from 0 to 255
+    // so the possible negative number will be truncated
+    cv::Mat imgLaplacian;
+    cv::Mat sharp = tmp; // copy source image to another temporary one
+    cv::filter2D(sharp, imgLaplacian, CV_32F, kernel);
+    tmp.convertTo(sharp, CV_32F);
+    cv::Mat imgResult = sharp - imgLaplacian;
+    // convert back to 8bits gray scale
+    imgResult.convertTo(imgResult, CV_8UC3);
+    imgLaplacian.convertTo(imgLaplacian, CV_8UC3);
+    imshow( "Laplace Filtered Image", imgLaplacian );
+    imshow( "New Sharped Image", imgResult );
+    cv::waitKey(0);
+    return ;
+*/
+    cv::Mat hsv;
+    cvtColor(tmp, hsv, CV_BGR2HSV);
+
+    cv::inRange(hsv, cv::Scalar(0, 0, 0, 0), cv::Scalar(180, 255, 30, 0), hsv);
+  
+
     std::vector<std::vector<cv::Point> > contours;
+    std::vector<std::vector<cv::Point> > contours_hull;
     std::vector<cv::Vec4i> hierarchy;
-    findContours(tmp, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+    findContours(hsv, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
 
     double la = -1;
     int lci = 0;
@@ -65,15 +103,150 @@ void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imageli
         bounding_rect=cv::boundingRect(contours[i]); // Find the bounding rectangle for biggest contour
       }
     }
+    
+    cv::Mat mask = cv::Mat::zeros( tmp.size(), CV_8UC1 );
+
+    cv::Mat mask_hull = cv::Mat::zeros( tmp.size(), CV_8UC1 );
+    std::vector<cv::Point> convexHullPoints =  contoursConvexHull(contours, lci);
+    contours_hull.push_back(convexHullPoints);
+   // polylines( mask, convexHullPoints, true, Scalar(255),2);
+    cv::drawContours( mask, contours, lci, 255,  CV_FILLED, 8, hierarchy, 0, Point() );
+    cv::Moments mu = cv::moments( contours[lci], false );
+    cv::Point2f mc = Point2f( static_cast<float>(mu.m10/mu.m00) , static_cast<float>(mu.m01/mu.m00) );
+    cv::drawContours( mask_hull, contours_hull, 0, 255,  CV_FILLED, 8, hierarchy, 0, Point() );
+
+    cv::imshow("vision tmp", mask);
+    cv::waitKey(0);
+
+
+    for(int y = 0; y<mask.rows;++y)
+    {
+      for(int x = 0; x<mask.cols;++x)
+      {
+        uchar &u = mask.at<uchar>(y,x);
+
+        uchar &u_hull = mask_hull.at<uchar>(y,x);
+        if(u== 255)
+          u = GC_FGD;
+        else
+          {
+          if(u_hull == 0)
+              u = GC_BGD;
+          else
+             { 
+             if(u==0 && u_hull>0)
+                {
+                  //if( pointPolygonTest(contours[lci], Point2f(x,y), false)>=0)
+                    u= GC_PR_FGD;
+                  /*else
+                  {
+                      u= GC_PR_BGD;
+                  }*/
+                }
+             }
+          }
+        
+      }
+    }
+
+    cv::Mat result; // segmentation result (4 possible values)
+    cv::Mat bgModel,fgModel; // the models (internally used)
+ 
+    // GrabCut segmentation
+    cv::grabCut(tmp,    // input image
+        mask,   // segmentation result
+        bounding_rect,// rectangle containing foreground 
+        bgModel,fgModel, // models
+        10,        // number of iterations
+        cv::GC_INIT_WITH_MASK/*cv::GC_INIT_WITH_RECT*/); // use rectangle
+    
+/*
+    // let's get all foreground and possible foreground pixels
+cv::Mat1b mask_fgpf = ( markers == cv::GC_FGD) | ( markers == cv::GC_PR_FGD);
+// and copy all the foreground-pixels to a temporary image
+cv::Mat3b tmp = cv::Mat3b::zeros(img.rows, img.cols);
+img.copyTo(tmp, mask_fgpf);
+// show it
+cv::imshow("foreground", tmp);
+cv::waitKey(0);
+*/
+
+    // Get the pixels marked as likely foreground  
+    cv::compare(mask,cv::GC_PR_FGD | cv::GC_FGD,result,cv::CMP_EQ);
+    // Generate output image
+    cv::Mat foreground(tmp.size(),CV_8UC3,cv::Scalar(255,255,255));
+    tmp.copyTo(foreground,result); // bg pixels not copied
+ 
+    // draw rectangle on original image
+    cv::rectangle(tmp, bounding_rect, cv::Scalar(255,255,255),1);
+    cv::circle( drawing, mc[i], 4, cv::Scalar(), -1, 8, 0 );
+    cv::namedWindow("Image");
+    cv::imshow("Image",tmp);
+     cv::waitKey(0);
+ 
+    // display result
+    cv::namedWindow("Segmented Image");
+    cv::imshow("Segmented Image",foreground);
+    cv::waitKey(0);
+    Mat labels, stats, centroids;
+    int nLabels = connectedComponentsWithStats	(	result, labels,stats, centroids);
+
+    // detect the inner circle of the hexagon, since it is the most visible
+    int i_max_area = 0;
+    int i_max_area_cc = -1;
+    for(int i = 1; i<nLabels; ++i)
+    {
+      
+      float area = stats.at<int>(i,CC_STAT_AREA);
+      std::cout<< "area:"<< area<<std::endl;
+      if(area<minArea || area>maxArea)
+        continue;
+      else
+      {
+        if(i_max_area<stats.at<int>(i,CC_STAT_AREA))
+        {
+          i_max_area = stats.at<int>(i,CC_STAT_AREA);
+          i_max_area_cc = i;
+        }
+      }
+    }
+
+
+  /*
     /// Draw contours
     tmp = cv::Mat::zeros( tmp.size(), CV_8UC3 );
     Scalar color = cv::Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
-    cv::drawContours( tmp, contours, lci, color, 2, 8, hierarchy, 0, Point() );
-    cv::rectangle(tmp, bounding_rect,  Scalar(0,255,0),1, 8,0);  
-    std::vector<cv::Point> convexHullPoints =  contoursConvexHull(contours, lci);
-    polylines( tmp, convexHullPoints, true, Scalar(0,0,255), 2 );
+    std::vector<cv::Point>  contours_approx;
+    approxPolyDP(contours[lci],contours_approx,10,true);
+    contours_poly.push_back(contours_approx);
+
+    cv::drawContours( tmp, contours_poly, 0, color,  CV_FILLED, 8, hierarchy, 0, Point() );
+    for(int y = 0; y<tmp.rows;++y)
+    {
+      for(int x = 0; x<tmp.cols;++x)
+      {
+        cv::Vec3b color = tmp.at<cv::Vec3b>(cv::Point(x,y));
+        if(y >=bounding_rect.y + 3.0/4.0*bounding_rect.height)
+        {
+          color[0] = 0;
+          color[1] = 0;
+          color[2] = 0;
+          tmp.at<Vec3b>(Point(x,y)) = color;
+        }
+      }
+    }
+    
+    //cv::rectangle(tmp, bounding_rect,  Scalar(0,255,0),1, 8,0);  
+    //std::vector<cv::Point> convexHullPoints =  contoursConvexHull(contours, lci);
+    //polylines( tmp, convexHullPoints, true, Scalar(0,0,255), 2 );
+
+    cv::imshow("vision roi", tmp);
+    cv::waitKey(0);
+
+
+    cv::drawContours( tmp, contours_poly, 0, cv::Scalar(255,0,0), 2, 8, hierarchy, 0, Point() );
     //----------------------------------------------------------------------------------------------------
-   cv::Mat tmp_temp;
+    cv::Mat tmp_temp;
     CLAHE_HistEq(templ, tmp_temp);
     cvtColor(tmp_temp, tmp_temp, CV_BGR2HSV);
     cv::inRange(tmp_temp, cv::Scalar(0, 0, 0, 0), cv::Scalar(180, 255, 30, 0), tmp_temp);
@@ -102,13 +275,16 @@ void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imageli
     std::vector<cv::Point> convexHullPoints_temp =  contoursConvexHull(contours_temp, lci_temp);
     polylines( tmp_temp, convexHullPoints_temp, true, Scalar(0,0,255), 2 );
 
+    //CV_CONTOURS_MATCH_I1 , CV_CONTOURS_MATCH_I2 or CV_CONTOURS_MATCH_I
+    double match_res = cv::matchShapes(contours_temp[lci_temp], contours[lci], CV_CONTOURS_MATCH_I1,0);
 
+    ROS_INFO("Matching result %f",match_res);
 
     cv::imshow("vision roi", tmp);
     cv::waitKey(0);
 
     cv::imshow("vision template", tmp_temp);
-    cv::waitKey(0);
+    cv::waitKey(0);*/
   }
 }
 
