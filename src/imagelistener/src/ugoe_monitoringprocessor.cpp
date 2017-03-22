@@ -11,21 +11,27 @@
 * implementation of find_templates
 */
 
- void Monitoring::find_template(int template_id, cv::Mat & template_found)
+ void Monitoring::find_template(int template_id, cv::Mat & template_found, cv::Mat & mask_found)
  {
    try
    {
      std::string s = boost::lexical_cast<std::string>(template_id);
      std::string path_t = path_to_templates+"/"+s+".png";
+    // std::string path_t_mask = path_to_templates+"/"+s+"_mask.png";
      std::cout<<path_t<<std::endl;
      boost::filesystem::path
-     targetFile(path_to_templates+"/"+s+".png");
+     targetFile(path_t);
+    
+    // boost::filesystem::path
+    // targetMaskFile(path_t_mask);
+
+
      if(boost::filesystem::exists(targetFile) &&
-     boost::filesystem::is_regular_file(targetFile)) 
+     boost::filesystem::is_regular_file(targetFile)/*&& boost::filesystem::exists(targetMaskFile) &&
+     boost::filesystem::is_regular_file(targetMaskFile)*/) 
      {
-      
        template_found = cv::imread(targetFile.string()); 
-       
+      // mask_found = cv::imread(targetMaskFile.string()); 
      }
    }
    catch (const boost::filesystem::filesystem_error& ex)
@@ -43,49 +49,67 @@ void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imageli
 {
   if(op_id == 1) // analyze black ball 
   {
+      cv::Mat gray;
+      cv::Mat img = roi.clone();
+      cv::cvtColor(roi, gray, COLOR_BGR2GRAY);
+      blurring(gray, gray, 15,3);
+      std::vector<cv::Vec3f> circles;
+      HoughCircles(gray, circles, HOUGH_GRADIENT, 1,
+      gray.rows, // change this value to detect circles with different distances to each other
+      100, 30, 150, 200 // upper thresh for canny, thresh for circle center, min radius, max radius - > these parameters must be set by the user and read from db!!!!
+      );
+      for( size_t i = 0; i < circles.size(); i++ )
+      {
+        cv::Vec3i c = circles[i];
+        //cout<<"circle: center "<<c[0]<<" "<<c[1]<<" radius:"<<c[2]<<std::endl;
+        circle( img, Point(c[0], c[1]), c[2], Scalar(0,0,255), 3, LINE_AA);
+        circle( img, Point(c[0], c[1]), 2, Scalar(0,255,0), 3, LINE_AA);
+      }
+      cv::imshow("detected circles", img);
+      cv::waitKey(0);
+      if(circles.size()==1)
+      {
+        ROS_INFO("The detail is OK");
+        res.Mon_result.detail_detected = 1;
+        res.Mon_result.detail_ok = 1;
+      }
+      else
+      {
+        ROS_INFO("The black ball is damaged!");
+        res.Mon_result.detail_detected = 1;
+        res.Mon_result.detail_ok = 0;
+      }
+
+
+    /*
     // detect  roi characteristics
     cv::RNG rng(12345);
+    // equalize histogram
     cv::Mat tmp;
-    CLAHE_HistEq(roi, tmp);
-   // cvtColor(tmp, tmp, CV_BGR2HSV);
-    //Mat hsv[3];   //destination array
-    //cv::split(tmp,hsv);//split source  
-   // cv::imshow("vision hsv[0]", hsv[0]);
-   // cv::waitKey(0);
-   // cv::imshow("vision hsv[1]", hsv[1]);
-   // cv::waitKey(0);
-   // cv::imshow("vision hsv[2]", hsv[2]);
-   // cv::waitKey(0);
-    // Create a kernel that we will use for accuting/sharpening our image
-  /*  cv::Mat kernel = (cv::Mat_<float>(3,3) <<
-            1,  1, 1,
-            1, -8, 1,
-            1,  1, 1); // an approximation of second derivative, a quite strong kernel
-    // do the laplacian filtering as it is
-    // well, we need to convert everything in something more deeper then CV_8U
-    // because the kernel has some negative values,
-    // and we can expect in general to have a Laplacian image with negative values
-    // BUT a 8bits unsigned int (the one we are working with) can contain values from 0 to 255
-    // so the possible negative number will be truncated
-    cv::Mat imgLaplacian;
-    cv::Mat sharp = tmp; // copy source image to another temporary one
-    cv::filter2D(sharp, imgLaplacian, CV_32F, kernel);
-    tmp.convertTo(sharp, CV_32F);
-    cv::Mat imgResult = sharp - imgLaplacian;
-    // convert back to 8bits gray scale
-    imgResult.convertTo(imgResult, CV_8UC3);
-    imgLaplacian.convertTo(imgLaplacian, CV_8UC3);
-    imshow( "Laplace Filtered Image", imgLaplacian );
-    imshow( "New Sharped Image", imgResult );
+    CLAHE_HistEq(templ, tmp);
+    blurring(tmp,tmp,5,3);
+    cv::namedWindow("Image");
+    cv::imshow("Image",tmp);
     cv::waitKey(0);
-    return ;
-*/
+    int scale = 1;
+    int delta = 0;
+    cv::Mat tmp_gray;
+    cvtColor( tmp, tmp_gray, CV_BGR2GRAY );
+    //threshold(tmp_gray, tmp_gray, 0,255,CV_THRESH_BINARY | CV_THRESH_OTSU);
+    //adaptiveThreshold(tmp_gray, tmp_gray, 255,ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, 0.5);
+    //imshow( "Image", tmp_gray );
+    //waitKey(0);
+    //return;
+
+
+    // convert to HSV
     cv::Mat hsv;
     cvtColor(tmp, hsv, CV_BGR2HSV);
 
-    cv::inRange(hsv, cv::Scalar(0, 0, 0, 0), cv::Scalar(180, 255, 30, 0), hsv);
-  
 
+    // color thresholding of the black color
+    cv::inRange(hsv, cv::Scalar(0, 0, 0, 0), cv::Scalar(180, 255, 30, 0), hsv);
+    
     std::vector<std::vector<cv::Point> > contours;
     std::vector<std::vector<cv::Point> > contours_hull;
     std::vector<cv::Vec4i> hierarchy;
@@ -105,20 +129,21 @@ void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imageli
     }
     
     cv::Mat mask = cv::Mat::zeros( tmp.size(), CV_8UC1 );
-
+  
     cv::Mat mask_hull = cv::Mat::zeros( tmp.size(), CV_8UC1 );
     std::vector<cv::Point> convexHullPoints =  contoursConvexHull(contours, lci);
     contours_hull.push_back(convexHullPoints);
-   // polylines( mask, convexHullPoints, true, Scalar(255),2);
     cv::drawContours( mask, contours, lci, 255,  CV_FILLED, 8, hierarchy, 0, Point() );
+    // detect center of masses
     cv::Moments mu = cv::moments( contours[lci], false );
     cv::Point2f mc = Point2f( static_cast<float>(mu.m10/mu.m00) , static_cast<float>(mu.m01/mu.m00) );
     cv::drawContours( mask_hull, contours_hull, 0, 255,  CV_FILLED, 8, hierarchy, 0, Point() );
 
     cv::imshow("vision tmp", mask);
+    cv::imwrite("1_mask.png",mask);
     cv::waitKey(0);
 
-
+    // initialize mask for GrabCut
     for(int y = 0; y<mask.rows;++y)
     {
       for(int x = 0; x<mask.cols;++x)
@@ -136,12 +161,7 @@ void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imageli
              { 
              if(u==0 && u_hull>0)
                 {
-                  //if( pointPolygonTest(contours[lci], Point2f(x,y), false)>=0)
                     u= GC_PR_FGD;
-                  /*else
-                  {
-                      u= GC_PR_BGD;
-                  }*/
                 }
              }
           }
@@ -158,7 +178,7 @@ void  Monitoring:: analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imageli
         bounding_rect,// rectangle containing foreground 
         bgModel,fgModel, // models
         10,        // number of iterations
-        cv::GC_INIT_WITH_MASK/*cv::GC_INIT_WITH_RECT*/); // use rectangle
+        cv::GC_INIT_WITH_MASK); // use rectangle*/
     
 /*
     // let's get all foreground and possible foreground pixels
@@ -170,7 +190,7 @@ img.copyTo(tmp, mask_fgpf);
 cv::imshow("foreground", tmp);
 cv::waitKey(0);
 */
-
+/*
     // Get the pixels marked as likely foreground  
     cv::compare(mask,cv::GC_PR_FGD | cv::GC_FGD,result,cv::CMP_EQ);
     // Generate output image
@@ -179,15 +199,16 @@ cv::waitKey(0);
  
     // draw rectangle on original image
     cv::rectangle(tmp, bounding_rect, cv::Scalar(255,255,255),1);
-    cv::circle( drawing, mc[i], 4, cv::Scalar(), -1, 8, 0 );
+    cv::circle( tmp, mc, 4, cv::Scalar(255,255,0), -1, 8, 0 );
     cv::namedWindow("Image");
     cv::imshow("Image",tmp);
      cv::waitKey(0);
  
     // display result
     cv::namedWindow("Segmented Image");
-    cv::imshow("Segmented Image",foreground);
-    cv::waitKey(0);
+    cv::imshow("Segmented Image",result);
+    cv::waitKey(0);*/
+    /*
     Mat labels, stats, centroids;
     int nLabels = connectedComponentsWithStats	(	result, labels,stats, centroids);
 
@@ -210,6 +231,7 @@ cv::waitKey(0);
         }
       }
     }
+    */
 
 
   /*
@@ -288,31 +310,6 @@ cv::waitKey(0);
   }
 }
 
-/*
-* convex hull from the contour points
-* index is the contour index, for which we want to build the convex hull
-*/
-
-std::vector<cv::Point> Monitoring::contoursConvexHull( std::vector<std::vector<cv::Point> > & contours, size_t index )
-{
-    
-  std::vector<cv::Point> result;
-  std::vector<cv::Point> pts;
-  if(index>0 && index< contours.size())
-  {
-    for ( size_t j = 0; j< contours[index].size(); j++)
-      pts.push_back(contours[index][j]);
-  }
-  else
-  {
-    for ( size_t i = 0; i< contours.size(); i++)
-      for ( size_t j = 0; j< contours[i].size(); j++)
-        pts.push_back(contours[i][j]);
-  }
-  cv::convexHull( pts, result );
-  return result;
-}
-
 
 
 
@@ -326,7 +323,8 @@ void  Monitoring:: execute_monitoring(
                           cv::Mat & current_image)
 {
       cv::Mat templ_image;
-      find_template(req.ID_Template, templ_image);
+      cv::Mat templ_mask;
+      find_template(req.ID_Template, templ_image, templ_mask);
       if(!templ_image.empty())
       {
         // try to detect template in the current image
@@ -341,7 +339,7 @@ void  Monitoring:: execute_monitoring(
         result.create( result_rows, result_cols, CV_32FC1 );
 
         /// Do the Matching and Normalize
-        matchTemplate( current_image, templ_image, result, CV_TM_CCOEFF_NORMED );
+        matchTemplate( current_image, templ_image, result, CV_TM_CCOEFF_NORMED);
        // normalize( result, result, 0, 1, NORM_MINMAX, -1, Mat() );
 
         /// Localizing the best match with minMaxLoc
@@ -353,21 +351,37 @@ void  Monitoring:: execute_monitoring(
         std::cout<<"Max val matching:" <<maxVal<< " Min val matching:"<< minVal << std::endl;
         std::cout<<"Match loc:[x,y]:"<<matchLoc.x<<" "<<matchLoc.y<<std::endl;
 
-        if(maxVal>0.8)
+        if(maxVal>0.85)
         {
-          ROS_INFO("Template is detected! Start comparison according to the operation sent...");
+          ROS_INFO("Template is OK detected! Start comparison according to the operation sent...");
           
           cv::Rect r (matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
           cv::Mat roi = img_display(r).clone();
+          
           analyzeROI(roi, templ_image, req.ID_Operation, res);
-/*          rectangle( img_display, matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ), CV_RGB(255, 255, 255), 0.5 );*/
-      //    cv::namedWindow("MatchingResult",CV_WINDOW_NORMAL);
-      //    cv::imshow("MatchingResult", roi);
-      //    cv::waitKey(0);
+
+          res.Im_Width = current_image.cols;
+          res.Im_Height = current_image.rows;
+          res.Mon_result.operation_type = (long int)req.ID_Operation;
+          
+
+
+    
+          //matchTemplate( roi_gray, tmp_gray, result_gray, CV_TM_CCOEFF_NORMED/*,templ_mask*/);
+
+          
+
+
+
+//          /*          rectangle( img_display, matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ), CV_RGB(255, 255, 255), 0.5 );*/
+          cv::namedWindow("MatchingResult",CV_WINDOW_NORMAL);
+          cv::imshow("MatchingResult", roi);
+          cv::waitKey(0);
+       //   cv::imwrite("roi.png",roi);
 
         }
         else
-        if(maxVal<=0.8&& maxVal>0.5)
+        if(maxVal<=0.85&& maxVal>0.5)
         {
             ROS_INFO("Template is found, but the detail is probably  damaged");
             res.Im_Width = current_image.cols;
@@ -378,7 +392,7 @@ void  Monitoring:: execute_monitoring(
         }
         else
         {
-          ROS_ERROR("No template is present in the image!!!");
+          ROS_ERROR("No template is present in the image or the detail is heavily damaged!!!");
           res.Im_Width = -1;
           res.Im_Height = -1;
           res.Mon_result.operation_type = (long int)req.ID_Operation;
@@ -396,6 +410,7 @@ void  Monitoring:: execute_monitoring(
         res.Mon_result.detail_detected = -1;
       }
 }
+
 
 
 //-------------------------------------------------------------------------------------------
@@ -450,6 +465,15 @@ void Monitoring::blurring(cv::Mat& in_, cv::Mat& out_, int size, int alg)
   }
 }
 //------------------------------------------------------------------------------------------
+// thresholding
+
+void Monitoring::thresholding(cv::Mat & img_, cv::Mat & out_, int alg)
+{
+  
+}
+
+
+//------------------------------------------------------------------------------------------
 // auto canny (no parameters)
 void Monitoring::autoCanny(cv::Mat& img_, cv::Mat & out_)
 {
@@ -480,6 +504,33 @@ void Monitoring::autoCanny(cv::Mat& img_, cv::Mat & out_)
     cv::drawContours( out_, contours, i, color, 2, 8, hierarchy, 0, Point() );
   }
 }
+
+/*
+* convex hull from the contour points
+* index is the contour index, for which we want to build the convex hull
+*/
+
+std::vector<cv::Point> Monitoring::contoursConvexHull( std::vector<std::vector<cv::Point> > & contours, size_t index )
+{
+    
+  std::vector<cv::Point> result;
+  std::vector<cv::Point> pts;
+  if(index>0 && index< contours.size())
+  {
+    for ( size_t j = 0; j< contours[index].size(); j++)
+      pts.push_back(contours[index][j]);
+  }
+  else
+  {
+    for ( size_t i = 0; i< contours.size(); i++)
+      for ( size_t j = 0; j< contours[i].size(); j++)
+        pts.push_back(contours[i][j]);
+  }
+  cv::convexHull( pts, result );
+  return result;
+}
+
+
 
 //--------------------------------------------------------------------------------------------
 // return median value for each channel of image

@@ -66,6 +66,8 @@ class Monitoring
    void autoCanny(cv::Mat& img_, cv::Mat & out_);
    // build convex hull from contour points
    std::vector<cv::Point> contoursConvexHull( std::vector<std::vector<cv::Point> > & contours, size_t index);
+   // thresholding: color in hsv space or otsu or adaptive
+   void thresholding(cv::Mat & img_, cv::Mat & out_, int alg);
    
 
 
@@ -93,7 +95,7 @@ class Monitoring
    *  finds a template with the name template_id.png in path_to_templates
    *  if path is not set or no such file -> throws exception
    */
-  void find_template(int template_id, cv::Mat & template_found);
+  void find_template(int template_id, cv::Mat & template_found, cv::Mat & mask_found);
 
   /*
    *  main monitoring function 
