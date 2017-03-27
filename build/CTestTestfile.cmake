@@ -6,6 +6,7 @@
 # testing this directory and lists subdirectories to be tested as well.
 SUBDIRS(gtest)
 SUBDIRS(imagepublisher)
+SUBDIRS(imagesubscriber)
 SUBDIRS(imagelistener)
 SUBDIRS(vision_opencv/opencv_tests)
 SUBDIRS(camera_control_msgs)

@@ -21,6 +21,8 @@ cv_bridge/cv_bridge.h
 /home/tiva/catkin_ws/src/imagepublisher/src/cv_bridge/cv_bridge.h
 fstream
 -
+ros/ros.h
+-
 
 /home/tiva/opencv/build/opencv2/opencv_modules.hpp
 

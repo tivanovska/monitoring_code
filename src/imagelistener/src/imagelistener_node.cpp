@@ -9,10 +9,16 @@
 #include "boost/date_time/posix_time/posix_time.hpp" //include all types plus i/o
 #include "boost/filesystem.hpp"
 #include "imagelistener/exampleImageProcessing.h"
+#include "imagelistener/imageViewing.h"
 #include "ugoe_monitoringprocessor.h"
+
+#include <memory>
+#include <thread>
 
 static const std::string OPENCV_WINDOW = "Image window";
 static const std::string OPENCV_CURRENT = "Image Current";
+
+std::shared_ptr<cv::Mat> p_currentImage;
 
 class ImageConverter
 {
@@ -21,14 +27,24 @@ class ImageConverter
   image_transport::Subscriber image_sub_;
   ros:: ServiceServer  processInputImageServer_;
   cv_bridge::CvImagePtr cv_ptr;
+  ros::ServiceClient clientViewImages_;
+
   std::string cv_window_name = "vision";
-  
+
+  Monitoring mon; 
   int mode;
   std::string path_to_images;
+
+ 
 public:
   ImageConverter(int mode_, std::string str_="")
     : it_(nh_), mode(mode_), path_to_images(str_)
   {
+
+   
+   mon.set_path_to_templates("/home/tiva/catkin_ws/templates_elvez_ugoe");
+   clientViewImages_ = nh_.serviceClient<imagelistener::imageViewing>("/imageviewer_node_server/image_display");
+
     if(mode_ == 0)
     {
       ROS_INFO ("Real measurement mode. Subscribing to pylon_camera_node...");
@@ -59,23 +75,26 @@ public:
       }
 
     }
-    cv::namedWindow(cv_window_name,CV_WINDOW_NORMAL);
+    //cv::namedWindow(cv_window_name,CV_WINDOW_NORMAL);
     processInputImageServer_= nh_.advertiseService("/imagelistener_node_server/image_monitoring",&ImageConverter::monitoringCallback, this);
-    //  image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
-   // cv::namedWindow(OPENCV_WINDOW,CV_WINDOW_NORMAL);
   }
 
   ~ImageConverter()
   {
-    //cv::destroyWindow(OPENCV_WINDOW);
+     
   }
     
+
+
+
+
+
+
   /*
   *  callback function for monitoring process
   *
   */
-
   bool monitoringCallback(imagelistener::exampleImageProcessing:: Request & req,
                           imagelistener::exampleImageProcessing:: Response & res)
   
@@ -88,7 +107,8 @@ public:
       
       ROS_INFO ("request came at: %s", str_time.c_str());
       
-      cv::Mat currentImage;    
+      cv::Mat currentImage;
+       
       if(mode == 0) // getting the image from the stream
       {
         ROS_INFO("real mode... getting image frame from pylon_camera stream");
@@ -111,15 +131,25 @@ public:
       }
       if(!currentImage.empty())
       {
-        // call monitoring function
-        Monitoring mon;
-        mon.set_path_to_templates("/home/tiva/catkin_ws/templates_elvez_ugoe");
-        mon.execute_monitoring(req,res,currentImage);
+        sensor_msgs::ImagePtr msg = 
+          cv_bridge::CvImage(std_msgs::Header(), "bgr8", currentImage).toImageMsg();
 
-             /*cv::namedWindow(OPENCV_CURRENT,CV_WINDOW_NORMAL);
-        cv::imshow(OPENCV_CURRENT, currentImage);
-        cv::waitKey(0);
-        cv::destroyWindow(OPENCV_CURRENT);*/
+        cv::imwrite("/home/tiva/catkin_ws/tmp_imgs/init.png", currentImage);
+        // call monitoring function
+        //mon.execute_monitoring(req,res,currentImage);
+
+        // send request to display
+        imagelistener::imageViewing srv;
+        srv.request.path_to_tmp_img ="/home/tiva/catkin_ws/tmp_imgs" ;
+        if (clientViewImages_.call(srv))
+        {
+          ROS_INFO("Service to display results is called");
+        }
+        else
+        {
+          ROS_ERROR("Failed to call service for image display");
+          return 1;
+        }
       }
 
 
@@ -128,12 +158,10 @@ public:
                  (long int)res.Im_Width, 
                  (long int)res.Im_Height, 
                  (long int) res.Mon_result.operation_type);
-
-      return true;
+            return true;
   }
   
-
-
+ 
   /*
   *  The callback function for camera video subscription
   *   Reads the video from the stream and converts it cv_ptr
@@ -173,11 +201,37 @@ public:
   }
 };
 
+
+ /*
+   *
+   *
+   *
+   */
+  void thr(std::shared_ptr<cv::Mat>  pImg)
+  {
+   // while(1)
+    {
+    cv::namedWindow(OPENCV_CURRENT,CV_WINDOW_NORMAL);
+    cv::imshow(OPENCV_CURRENT, *pImg);
+    cv::waitKey(0);
+    }
+  }
+
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "monitoring_server");
   ImageConverter ic(1,"/home/tiva/catkin_ws/imgs");
+
+  
+
+  //p_currentImage = std::make_shared<cv::Mat>(cv::Mat::zeros(100, 100, CV_64F));
+  //std::thread t1 = std::thread(thr, p_currentImage);
   ros::spin();
-  cv::destroyAllWindows();
+
+  //cv::destroyAllWindows();
+
+  //t1.join();
+  //cv::destroyWindow(OPENCV_CURRENT);
   return 0;
 }

@@ -944,8 +944,12 @@ if(gencpp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/ca
     DESTINATION ${gencpp_INSTALL_DIR}
   )
 endif()
-add_dependencies(camera_control_msgs_generate_messages_cpp actionlib_msgs_generate_messages_cpp)
-add_dependencies(camera_control_msgs_generate_messages_cpp sensor_msgs_generate_messages_cpp)
+if(TARGET actionlib_msgs_generate_messages_cpp)
+  add_dependencies(camera_control_msgs_generate_messages_cpp actionlib_msgs_generate_messages_cpp)
+endif()
+if(TARGET sensor_msgs_generate_messages_cpp)
+  add_dependencies(camera_control_msgs_generate_messages_cpp sensor_msgs_generate_messages_cpp)
+endif()
 
 if(genlisp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/camera_control_msgs)
   # install generated code
@@ -954,8 +958,12 @@ if(genlisp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/
     DESTINATION ${genlisp_INSTALL_DIR}
   )
 endif()
-add_dependencies(camera_control_msgs_generate_messages_lisp actionlib_msgs_generate_messages_lisp)
-add_dependencies(camera_control_msgs_generate_messages_lisp sensor_msgs_generate_messages_lisp)
+if(TARGET actionlib_msgs_generate_messages_lisp)
+  add_dependencies(camera_control_msgs_generate_messages_lisp actionlib_msgs_generate_messages_lisp)
+endif()
+if(TARGET sensor_msgs_generate_messages_lisp)
+  add_dependencies(camera_control_msgs_generate_messages_lisp sensor_msgs_generate_messages_lisp)
+endif()
 
 if(genpy_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/camera_control_msgs)
   install(CODE "execute_process(COMMAND \"/usr/bin/python\" -m compileall \"${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/camera_control_msgs\")")
@@ -965,5 +973,9 @@ if(genpy_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/came
     DESTINATION ${genpy_INSTALL_DIR}
   )
 endif()
-add_dependencies(camera_control_msgs_generate_messages_py actionlib_msgs_generate_messages_py)
-add_dependencies(camera_control_msgs_generate_messages_py sensor_msgs_generate_messages_py)
+if(TARGET actionlib_msgs_generate_messages_py)
+  add_dependencies(camera_control_msgs_generate_messages_py actionlib_msgs_generate_messages_py)
+endif()
+if(TARGET sensor_msgs_generate_messages_py)
+  add_dependencies(camera_control_msgs_generate_messages_py sensor_msgs_generate_messages_py)
+endif()

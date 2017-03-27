@@ -1,7 +1,7 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
 messages_str = "/home/tiva/catkin_ws/src/imagelistener/msg/ELVEZ.msg"
-services_str = "/home/tiva/catkin_ws/src/imagelistener/srv/exampleImageProcessing.srv"
+services_str = "/home/tiva/catkin_ws/src/imagelistener/srv/exampleImageProcessing.srv;/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv"
 pkg_name = "imagelistener"
 dependencies_str = "std_msgs"
 langs = "gencpp;genlisp;genpy"

@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "imagelistener: 1 messages, 1 services")
+message(STATUS "imagelistener: 1 messages, 2 services")
 
 set(MSG_I_FLAGS "-Iimagelistener:/home/tiva/catkin_ws/src/imagelistener/msg;-Istd_msgs:/opt/ros/indigo/share/std_msgs/cmake/../msg")
 
@@ -25,6 +25,11 @@ add_custom_target(_imagelistener_generate_messages_check_deps_${_filename}
   COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "imagelistener" "/home/tiva/catkin_ws/src/imagelistener/srv/exampleImageProcessing.srv" "imagelistener/ELVEZ"
 )
 
+get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv" NAME_WE)
+add_custom_target(_imagelistener_generate_messages_check_deps_${_filename}
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "imagelistener" "/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv" ""
+)
+
 #
 #  langs = gencpp;genlisp;genpy
 #
@@ -45,6 +50,12 @@ _generate_srv_cpp(imagelistener
   "/home/tiva/catkin_ws/src/imagelistener/msg/ELVEZ.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/imagelistener
 )
+_generate_srv_cpp(imagelistener
+  "/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/imagelistener
+)
 
 ### Generating Module File
 _generate_module_cpp(imagelistener
@@ -61,6 +72,8 @@ add_dependencies(imagelistener_generate_messages imagelistener_generate_messages
 get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/msg/ELVEZ.msg" NAME_WE)
 add_dependencies(imagelistener_generate_messages_cpp _imagelistener_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/srv/exampleImageProcessing.srv" NAME_WE)
+add_dependencies(imagelistener_generate_messages_cpp _imagelistener_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv" NAME_WE)
 add_dependencies(imagelistener_generate_messages_cpp _imagelistener_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -86,6 +99,12 @@ _generate_srv_lisp(imagelistener
   "/home/tiva/catkin_ws/src/imagelistener/msg/ELVEZ.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/imagelistener
 )
+_generate_srv_lisp(imagelistener
+  "/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/imagelistener
+)
 
 ### Generating Module File
 _generate_module_lisp(imagelistener
@@ -102,6 +121,8 @@ add_dependencies(imagelistener_generate_messages imagelistener_generate_messages
 get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/msg/ELVEZ.msg" NAME_WE)
 add_dependencies(imagelistener_generate_messages_lisp _imagelistener_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/srv/exampleImageProcessing.srv" NAME_WE)
+add_dependencies(imagelistener_generate_messages_lisp _imagelistener_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv" NAME_WE)
 add_dependencies(imagelistener_generate_messages_lisp _imagelistener_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -127,6 +148,12 @@ _generate_srv_py(imagelistener
   "/home/tiva/catkin_ws/src/imagelistener/msg/ELVEZ.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/imagelistener
 )
+_generate_srv_py(imagelistener
+  "/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/imagelistener
+)
 
 ### Generating Module File
 _generate_module_py(imagelistener
@@ -143,6 +170,8 @@ add_dependencies(imagelistener_generate_messages imagelistener_generate_messages
 get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/msg/ELVEZ.msg" NAME_WE)
 add_dependencies(imagelistener_generate_messages_py _imagelistener_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/srv/exampleImageProcessing.srv" NAME_WE)
+add_dependencies(imagelistener_generate_messages_py _imagelistener_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv" NAME_WE)
 add_dependencies(imagelistener_generate_messages_py _imagelistener_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -161,7 +190,9 @@ if(gencpp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/im
     DESTINATION ${gencpp_INSTALL_DIR}
   )
 endif()
-add_dependencies(imagelistener_generate_messages_cpp std_msgs_generate_messages_cpp)
+if(TARGET std_msgs_generate_messages_cpp)
+  add_dependencies(imagelistener_generate_messages_cpp std_msgs_generate_messages_cpp)
+endif()
 
 if(genlisp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/imagelistener)
   # install generated code
@@ -170,7 +201,9 @@ if(genlisp_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/
     DESTINATION ${genlisp_INSTALL_DIR}
   )
 endif()
-add_dependencies(imagelistener_generate_messages_lisp std_msgs_generate_messages_lisp)
+if(TARGET std_msgs_generate_messages_lisp)
+  add_dependencies(imagelistener_generate_messages_lisp std_msgs_generate_messages_lisp)
+endif()
 
 if(genpy_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/imagelistener)
   install(CODE "execute_process(COMMAND \"/usr/bin/python\" -m compileall \"${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/imagelistener\")")
@@ -180,4 +213,6 @@ if(genpy_INSTALL_DIR AND EXISTS ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/imag
     DESTINATION ${genpy_INSTALL_DIR}
   )
 endif()
-add_dependencies(imagelistener_generate_messages_py std_msgs_generate_messages_py)
+if(TARGET std_msgs_generate_messages_py)
+  add_dependencies(imagelistener_generate_messages_py std_msgs_generate_messages_py)
+endif()

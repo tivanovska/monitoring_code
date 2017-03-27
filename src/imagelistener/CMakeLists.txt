@@ -21,6 +21,8 @@ find_package(OpenCV 3 REQUIRED)
 set(OpenCV_INCLUDE_DIRS "/home/opencv-install/include")
 
 find_package(Boost REQUIRED)
+
+find_package (Qt5Widgets REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -64,6 +66,7 @@ find_package(Boost REQUIRED)
  add_service_files(
    FILES
    exampleImageProcessing.srv
+   imageViewing.srv
  )
 
 ## Generate actions in the 'action' folder
@@ -147,14 +150,31 @@ target_link_libraries(imagelistener_node_server
 
 target_link_libraries(imagelistener_node_server
    ${OpenCV_LIBS} ${Boost_LIBRARIES})
-
+#################################
 add_executable(imagelistener_node_client src/imagemonitoring_client.cpp)
+
 
 target_link_libraries(imagelistener_node_client
    ${catkin_LIBRARIES})
 
 target_link_libraries(imagelistener_node_client
    ${OpenCV_LIBS})
+###################################
+
+add_executable(imageviewer_node_server src/imageviewer_node.cpp
+src/gui_imageviewer.cpp)
+
+
+target_link_libraries(imageviewer_node_server
+   ${catkin_LIBRARIES})
+
+target_link_libraries(imageviewer_node_server
+   ${OpenCV_LIBS})
+
+target_link_libraries(imageviewer_node_server
+   Qt5::Widgets)   
+
+
 
 
 

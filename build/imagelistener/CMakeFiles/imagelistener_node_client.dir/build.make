@@ -127,13 +127,11 @@ imagelistener_node_client_EXTERNAL_OBJECTS =
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /home/tiva/opencv/build/lib/libopencv_xphoto.so.3.2.0
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/libimage_transport.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/libmessage_filters.so
-/home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libtinyxml.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/libclass_loader.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/libPocoFoundation.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libdl.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/libroscpp.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libboost_signals.so
-/home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/librosconsole.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/librosconsole_log4cxx.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/librosconsole_backend_interface.so
@@ -141,6 +139,11 @@ imagelistener_node_client_EXTERNAL_OBJECTS =
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libboost_regex.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/libxmlrpcpp.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/libroslib.so
+/home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/librospack.so
+/home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libpython2.7.so
+/home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+/home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libboost_program_options.so
+/home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libtinyxml.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/libroscpp_serialization.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /opt/ros/indigo/lib/librostime.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_client: /usr/lib/x86_64-linux-gnu/libboost_date_time.so

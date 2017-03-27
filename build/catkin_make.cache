@@ -1,2 +1,2 @@
-camera_control_msgs:imagelistener:imagepublisher:pylon_camera:vision_opencv/cv3_bridge:vision_opencv/image_geometry:vision_opencv/opencv_tests:vision_opencv/vision_opencv
+camera_control_msgs:imagelistener:imagepublisher:imagesubscriber:pylon_camera:vision_opencv/cv3_bridge:vision_opencv/image_geometry:vision_opencv/opencv_tests:vision_opencv/vision_opencv
 -DCATKIN_DEVEL_PREFIX=/home/tiva/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/tiva/catkin_ws/install -G Unix Makefiles

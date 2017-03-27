@@ -2,6 +2,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/imagelistener_generate_messages_lisp"
   "/home/tiva/catkin_ws/devel/share/common-lisp/ros/imagelistener/msg/ELVEZ.lisp"
   "/home/tiva/catkin_ws/devel/share/common-lisp/ros/imagelistener/srv/exampleImageProcessing.lisp"
+  "/home/tiva/catkin_ws/devel/share/common-lisp/ros/imagelistener/srv/imageViewing.lisp"
 )
 
 # Per-language clean rules from dependency scanning.

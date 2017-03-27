@@ -1,2 +1,2 @@
 set(imagelistener_MESSAGE_FILES "/home/tiva/catkin_ws/src/imagelistener/msg/ELVEZ.msg")
-set(imagelistener_SERVICE_FILES "/home/tiva/catkin_ws/src/imagelistener/srv/exampleImageProcessing.srv")
+set(imagelistener_SERVICE_FILES "/home/tiva/catkin_ws/src/imagelistener/srv/exampleImageProcessing.srv;/home/tiva/catkin_ws/src/imagelistener/srv/imageViewing.srv")

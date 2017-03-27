@@ -118,6 +118,7 @@ IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   INCLUDE("/home/tiva/catkin_ws/build/gtest/cmake_install.cmake")
   INCLUDE("/home/tiva/catkin_ws/build/imagepublisher/cmake_install.cmake")
+  INCLUDE("/home/tiva/catkin_ws/build/imagesubscriber/cmake_install.cmake")
   INCLUDE("/home/tiva/catkin_ws/build/imagelistener/cmake_install.cmake")
   INCLUDE("/home/tiva/catkin_ws/build/vision_opencv/opencv_tests/cmake_install.cmake")
   INCLUDE("/home/tiva/catkin_ws/build/camera_control_msgs/cmake_install.cmake")
