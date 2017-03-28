@@ -84,10 +84,13 @@
 /home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imagelistener_genlisp.dir
 /home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imagelistener_genpy.dir
 /home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imagelistener_node_client.dir
+/home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir
 /home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imagelistener_node_server.dir
+/home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir
 /home/tiva/catkin_ws/build/imagepublisher/CMakeFiles/imagepublisher_node.dir
 /home/tiva/catkin_ws/build/imagesubscriber/CMakeFiles/imagesubscriber_node.dir
 /home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imageviewer_node_server.dir
+/home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir
 /home/tiva/catkin_ws/build/pylon_camera/CMakeFiles/pylon_camera.dir
 /home/tiva/catkin_ws/build/pylon_camera/CMakeFiles/pylon_camera_node.dir
 /home/tiva/catkin_ws/build/imagepublisher/CMakeFiles/roscpp_generate_messages_cpp.dir

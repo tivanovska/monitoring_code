@@ -95,16 +95,41 @@ imagelistener/CMakeFiles/imagelistener_node_server.dir/src/ugoe_monitoringproces
 
 imagelistener/CMakeFiles/imagelistener_node_server.dir/src/ugoe_monitoringprocessor.cpp.o.provides.build: imagelistener/CMakeFiles/imagelistener_node_server.dir/src/ugoe_monitoringprocessor.cpp.o
 
+imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o: imagelistener/CMakeFiles/imagelistener_node_server.dir/flags.make
+imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o: imagelistener/imagelistener_node_server_automoc.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/tiva/catkin_ws/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o"
+	cd /home/tiva/catkin_ws/build/imagelistener && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o -c /home/tiva/catkin_ws/build/imagelistener/imagelistener_node_server_automoc.cpp
+
+imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.i"
+	cd /home/tiva/catkin_ws/build/imagelistener && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/tiva/catkin_ws/build/imagelistener/imagelistener_node_server_automoc.cpp > CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.i
+
+imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.s"
+	cd /home/tiva/catkin_ws/build/imagelistener && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/tiva/catkin_ws/build/imagelistener/imagelistener_node_server_automoc.cpp -o CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.s
+
+imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o.requires:
+.PHONY : imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o.requires
+
+imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o.provides: imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o.requires
+	$(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_server.dir/build.make imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o.provides.build
+.PHONY : imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o.provides
+
+imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o.provides.build: imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o
+
 # Object files for target imagelistener_node_server
 imagelistener_node_server_OBJECTS = \
 "CMakeFiles/imagelistener_node_server.dir/src/imagelistener_node.cpp.o" \
-"CMakeFiles/imagelistener_node_server.dir/src/ugoe_monitoringprocessor.cpp.o"
+"CMakeFiles/imagelistener_node_server.dir/src/ugoe_monitoringprocessor.cpp.o" \
+"CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o"
 
 # External object files for target imagelistener_node_server
 imagelistener_node_server_EXTERNAL_OBJECTS =
 
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_server: imagelistener/CMakeFiles/imagelistener_node_server.dir/src/imagelistener_node.cpp.o
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_server: imagelistener/CMakeFiles/imagelistener_node_server.dir/src/ugoe_monitoringprocessor.cpp.o
+/home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_server: imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_server: imagelistener/CMakeFiles/imagelistener_node_server.dir/build.make
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_server: /home/tiva/catkin_ws/devel/lib/libcv3_bridge.so
 /home/tiva/catkin_ws/devel/lib/imagelistener/imagelistener_node_server: /home/tiva/opencv/build/lib/libopencv_calib3d.so.3.2.0
@@ -251,6 +276,7 @@ imagelistener/CMakeFiles/imagelistener_node_server.dir/build: /home/tiva/catkin_
 
 imagelistener/CMakeFiles/imagelistener_node_server.dir/requires: imagelistener/CMakeFiles/imagelistener_node_server.dir/src/imagelistener_node.cpp.o.requires
 imagelistener/CMakeFiles/imagelistener_node_server.dir/requires: imagelistener/CMakeFiles/imagelistener_node_server.dir/src/ugoe_monitoringprocessor.cpp.o.requires
+imagelistener/CMakeFiles/imagelistener_node_server.dir/requires: imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o.requires
 .PHONY : imagelistener/CMakeFiles/imagelistener_node_server.dir/requires
 
 imagelistener/CMakeFiles/imagelistener_node_server.dir/clean:

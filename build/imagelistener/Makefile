@@ -304,6 +304,20 @@ imagelistener_node_client/fast:
 .PHONY : imagelistener_node_client/fast
 
 # Convenience name for target.
+imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir/rule:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir/rule
+.PHONY : imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir/rule
+
+# Convenience name for target.
+imagelistener_node_client_automoc: imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir/rule
+.PHONY : imagelistener_node_client_automoc
+
+# fast build rule for target.
+imagelistener_node_client_automoc/fast:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir/build.make imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir/build
+.PHONY : imagelistener_node_client_automoc/fast
+
+# Convenience name for target.
 imagelistener/CMakeFiles/imagelistener_node_server.dir/rule:
 	cd /home/tiva/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 imagelistener/CMakeFiles/imagelistener_node_server.dir/rule
 .PHONY : imagelistener/CMakeFiles/imagelistener_node_server.dir/rule
@@ -318,6 +332,20 @@ imagelistener_node_server/fast:
 .PHONY : imagelistener_node_server/fast
 
 # Convenience name for target.
+imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir/rule:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir/rule
+.PHONY : imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir/rule
+
+# Convenience name for target.
+imagelistener_node_server_automoc: imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir/rule
+.PHONY : imagelistener_node_server_automoc
+
+# fast build rule for target.
+imagelistener_node_server_automoc/fast:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir/build.make imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir/build
+.PHONY : imagelistener_node_server_automoc/fast
+
+# Convenience name for target.
 imagelistener/CMakeFiles/imageviewer_node_server.dir/rule:
 	cd /home/tiva/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 imagelistener/CMakeFiles/imageviewer_node_server.dir/rule
 .PHONY : imagelistener/CMakeFiles/imageviewer_node_server.dir/rule
@@ -330,6 +358,116 @@ imageviewer_node_server: imagelistener/CMakeFiles/imageviewer_node_server.dir/ru
 imageviewer_node_server/fast:
 	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/build
 .PHONY : imageviewer_node_server/fast
+
+# Convenience name for target.
+imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir/rule:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir/rule
+.PHONY : imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir/rule
+
+# Convenience name for target.
+imageviewer_node_server_automoc: imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir/rule
+.PHONY : imageviewer_node_server_automoc
+
+# fast build rule for target.
+imageviewer_node_server_automoc/fast:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir/build
+.PHONY : imageviewer_node_server_automoc/fast
+
+imagelistener_node_client_automoc.o: imagelistener_node_client_automoc.cpp.o
+.PHONY : imagelistener_node_client_automoc.o
+
+# target to build an object file
+imagelistener_node_client_automoc.cpp.o:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_client.dir/build.make imagelistener/CMakeFiles/imagelistener_node_client.dir/imagelistener_node_client_automoc.cpp.o
+.PHONY : imagelistener_node_client_automoc.cpp.o
+
+imagelistener_node_client_automoc.i: imagelistener_node_client_automoc.cpp.i
+.PHONY : imagelistener_node_client_automoc.i
+
+# target to preprocess a source file
+imagelistener_node_client_automoc.cpp.i:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_client.dir/build.make imagelistener/CMakeFiles/imagelistener_node_client.dir/imagelistener_node_client_automoc.cpp.i
+.PHONY : imagelistener_node_client_automoc.cpp.i
+
+imagelistener_node_client_automoc.s: imagelistener_node_client_automoc.cpp.s
+.PHONY : imagelistener_node_client_automoc.s
+
+# target to generate assembly for a file
+imagelistener_node_client_automoc.cpp.s:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_client.dir/build.make imagelistener/CMakeFiles/imagelistener_node_client.dir/imagelistener_node_client_automoc.cpp.s
+.PHONY : imagelistener_node_client_automoc.cpp.s
+
+imagelistener_node_server_automoc.o: imagelistener_node_server_automoc.cpp.o
+.PHONY : imagelistener_node_server_automoc.o
+
+# target to build an object file
+imagelistener_node_server_automoc.cpp.o:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_server.dir/build.make imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.o
+.PHONY : imagelistener_node_server_automoc.cpp.o
+
+imagelistener_node_server_automoc.i: imagelistener_node_server_automoc.cpp.i
+.PHONY : imagelistener_node_server_automoc.i
+
+# target to preprocess a source file
+imagelistener_node_server_automoc.cpp.i:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_server.dir/build.make imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.i
+.PHONY : imagelistener_node_server_automoc.cpp.i
+
+imagelistener_node_server_automoc.s: imagelistener_node_server_automoc.cpp.s
+.PHONY : imagelistener_node_server_automoc.s
+
+# target to generate assembly for a file
+imagelistener_node_server_automoc.cpp.s:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_server.dir/build.make imagelistener/CMakeFiles/imagelistener_node_server.dir/imagelistener_node_server_automoc.cpp.s
+.PHONY : imagelistener_node_server_automoc.cpp.s
+
+imageviewer_node_server_automoc.o: imageviewer_node_server_automoc.cpp.o
+.PHONY : imageviewer_node_server_automoc.o
+
+# target to build an object file
+imageviewer_node_server_automoc.cpp.o:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/imageviewer_node_server_automoc.cpp.o
+.PHONY : imageviewer_node_server_automoc.cpp.o
+
+imageviewer_node_server_automoc.i: imageviewer_node_server_automoc.cpp.i
+.PHONY : imageviewer_node_server_automoc.i
+
+# target to preprocess a source file
+imageviewer_node_server_automoc.cpp.i:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/imageviewer_node_server_automoc.cpp.i
+.PHONY : imageviewer_node_server_automoc.cpp.i
+
+imageviewer_node_server_automoc.s: imageviewer_node_server_automoc.cpp.s
+.PHONY : imageviewer_node_server_automoc.s
+
+# target to generate assembly for a file
+imageviewer_node_server_automoc.cpp.s:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/imageviewer_node_server_automoc.cpp.s
+.PHONY : imageviewer_node_server_automoc.cpp.s
+
+include/moc_gui_imageviewer.o: include/moc_gui_imageviewer.cpp.o
+.PHONY : include/moc_gui_imageviewer.o
+
+# target to build an object file
+include/moc_gui_imageviewer.cpp.o:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/include/moc_gui_imageviewer.cpp.o
+.PHONY : include/moc_gui_imageviewer.cpp.o
+
+include/moc_gui_imageviewer.i: include/moc_gui_imageviewer.cpp.i
+.PHONY : include/moc_gui_imageviewer.i
+
+# target to preprocess a source file
+include/moc_gui_imageviewer.cpp.i:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/include/moc_gui_imageviewer.cpp.i
+.PHONY : include/moc_gui_imageviewer.cpp.i
+
+include/moc_gui_imageviewer.s: include/moc_gui_imageviewer.cpp.s
+.PHONY : include/moc_gui_imageviewer.s
+
+# target to generate assembly for a file
+include/moc_gui_imageviewer.cpp.s:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/include/moc_gui_imageviewer.cpp.s
+.PHONY : include/moc_gui_imageviewer.cpp.s
 
 src/gui_imageviewer.o: src/gui_imageviewer.cpp.o
 .PHONY : src/gui_imageviewer.o
@@ -469,14 +607,29 @@ help:
 	@echo "... imagelistener_genlisp"
 	@echo "... imagelistener_genpy"
 	@echo "... imagelistener_node_client"
+	@echo "... imagelistener_node_client_automoc"
 	@echo "... imagelistener_node_server"
+	@echo "... imagelistener_node_server_automoc"
 	@echo "... imageviewer_node_server"
+	@echo "... imageviewer_node_server_automoc"
 	@echo "... install"
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... imagelistener_node_client_automoc.o"
+	@echo "... imagelistener_node_client_automoc.i"
+	@echo "... imagelistener_node_client_automoc.s"
+	@echo "... imagelistener_node_server_automoc.o"
+	@echo "... imagelistener_node_server_automoc.i"
+	@echo "... imagelistener_node_server_automoc.s"
+	@echo "... imageviewer_node_server_automoc.o"
+	@echo "... imageviewer_node_server_automoc.i"
+	@echo "... imageviewer_node_server_automoc.s"
+	@echo "... include/moc_gui_imageviewer.o"
+	@echo "... include/moc_gui_imageviewer.i"
+	@echo "... include/moc_gui_imageviewer.s"
 	@echo "... src/gui_imageviewer.o"
 	@echo "... src/gui_imageviewer.i"
 	@echo "... src/gui_imageviewer.s"

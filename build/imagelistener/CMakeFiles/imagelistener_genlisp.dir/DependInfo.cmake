@@ -16,6 +16,8 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 
 # The include file search paths:
 SET(CMAKE_C_TARGET_INCLUDE_PATH
+  "imagelistener"
+  "/home/tiva/catkin_ws/src/imagelistener"
   "/home/tiva/catkin_ws/devel/include"
   "/home/tiva/catkin_ws/src/imagelistener/include"
   )

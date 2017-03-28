@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(imagelistener)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+set (CMAKE_AUTOMOC ON)
+set (CMAKE_INCLUDE_CURRENT_DIR ON)
 ## Add support for C++11, supported in ROS Kinetic and newer
 # add_definitions(-std=c++11)
 
@@ -22,7 +24,9 @@ set(OpenCV_INCLUDE_DIRS "/home/opencv-install/include")
 
 find_package(Boost REQUIRED)
 
+#set(CMAKE_PREFIX_PATH "/opt/Qt/5.1.1/gcc_64")
 find_package (Qt5Widgets REQUIRED)
+find_package(Qt5Core REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -141,7 +145,7 @@ catkin_package(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/imagelistener_node.cpp)
 
-include_directories(${Boost_INCLUDE_DIRS} include)
+include_directories(${Boost_INCLUDE_DIRS} ${QT_INCLUDES}  include)
 add_executable(imagelistener_node_server src/imagelistener_node.cpp
 src/ugoe_monitoringprocessor.cpp)
 
@@ -160,21 +164,24 @@ target_link_libraries(imagelistener_node_client
 target_link_libraries(imagelistener_node_client
    ${OpenCV_LIBS})
 ###################################
+set(imageviewer_node_server_SRCS src/imageviewer_node.cpp src/gui_imageviewer.cpp)
+set(imageviewer_node_server_MOC_HDRS include/gui_imageviewer.h)
 
-add_executable(imageviewer_node_server src/imageviewer_node.cpp
-src/gui_imageviewer.cpp)
+qt5_wrap_cpp(imageviewer_node_server_SRCS ${imageviewer_node_server_MOC_HDRS})
+add_executable(imageviewer_node_server ${imageviewer_node_server_SRCS}
+${imageviewer_node_server_CPP_FILES})
 
 
 target_link_libraries(imageviewer_node_server
    ${catkin_LIBRARIES})
 
 target_link_libraries(imageviewer_node_server
-   ${OpenCV_LIBS})
+   ${OpenCV_LIBS} ${QT_QTCORE_LIBRARY})
 
 target_link_libraries(imageviewer_node_server
    Qt5::Widgets)   
 
-
+qt5_use_modules(imageviewer_node_server Widgets)
 
 
 

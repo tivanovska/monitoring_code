@@ -6,3 +6,5 @@
 
 #IncludeRegexTransform: 
 
+/home/tiva/catkin_ws/build/imagelistener/imagelistener_node_client_automoc.cpp
+

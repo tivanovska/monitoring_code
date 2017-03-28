@@ -4,6 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
+  "/home/tiva/catkin_ws/build/imagelistener/imagelistener_node_client_automoc.cpp" "/home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imagelistener_node_client.dir/imagelistener_node_client_automoc.cpp.o"
   "/home/tiva/catkin_ws/src/imagelistener/src/imagemonitoring_client.cpp" "/home/tiva/catkin_ws/build/imagelistener/CMakeFiles/imagelistener_node_client.dir/src/imagemonitoring_client.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
@@ -21,6 +22,8 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 
 # The include file search paths:
 SET(CMAKE_C_TARGET_INCLUDE_PATH
+  "imagelistener"
+  "/home/tiva/catkin_ws/src/imagelistener"
   "/home/tiva/catkin_ws/devel/include"
   "/home/tiva/catkin_ws/src/imagelistener/include"
   "/home/tiva/opencv/build"

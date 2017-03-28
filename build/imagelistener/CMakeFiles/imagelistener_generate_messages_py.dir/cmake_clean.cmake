@@ -1,4 +1,7 @@
 FILE(REMOVE_RECURSE
+  "imagelistener_node_client_automoc.cpp"
+  "imagelistener_node_server_automoc.cpp"
+  "imageviewer_node_server_automoc.cpp"
   "CMakeFiles/imagelistener_generate_messages_py"
   "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/imagelistener/msg/_ELVEZ.py"
   "/home/tiva/catkin_ws/devel/lib/python2.7/dist-packages/imagelistener/srv/_exampleImageProcessing.py"

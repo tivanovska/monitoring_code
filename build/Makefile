@@ -605,6 +605,19 @@ imagelistener_node_client/fast:
 .PHONY : imagelistener_node_client/fast
 
 #=============================================================================
+# Target rules for targets named imagelistener_node_client_automoc
+
+# Build rule for target.
+imagelistener_node_client_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 imagelistener_node_client_automoc
+.PHONY : imagelistener_node_client_automoc
+
+# fast build rule for target.
+imagelistener_node_client_automoc/fast:
+	$(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir/build.make imagelistener/CMakeFiles/imagelistener_node_client_automoc.dir/build
+.PHONY : imagelistener_node_client_automoc/fast
+
+#=============================================================================
 # Target rules for targets named imagelistener_node_server
 
 # Build rule for target.
@@ -618,6 +631,19 @@ imagelistener_node_server/fast:
 .PHONY : imagelistener_node_server/fast
 
 #=============================================================================
+# Target rules for targets named imagelistener_node_server_automoc
+
+# Build rule for target.
+imagelistener_node_server_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 imagelistener_node_server_automoc
+.PHONY : imagelistener_node_server_automoc
+
+# fast build rule for target.
+imagelistener_node_server_automoc/fast:
+	$(MAKE) -f imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir/build.make imagelistener/CMakeFiles/imagelistener_node_server_automoc.dir/build
+.PHONY : imagelistener_node_server_automoc/fast
+
+#=============================================================================
 # Target rules for targets named imageviewer_node_server
 
 # Build rule for target.
@@ -629,6 +655,19 @@ imageviewer_node_server: cmake_check_build_system
 imageviewer_node_server/fast:
 	$(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/build
 .PHONY : imageviewer_node_server/fast
+
+#=============================================================================
+# Target rules for targets named imageviewer_node_server_automoc
+
+# Build rule for target.
+imageviewer_node_server_automoc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 imageviewer_node_server_automoc
+.PHONY : imageviewer_node_server_automoc
+
+# fast build rule for target.
+imageviewer_node_server_automoc/fast:
+	$(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server_automoc.dir/build
+.PHONY : imageviewer_node_server_automoc/fast
 
 #=============================================================================
 # Target rules for targets named _catkin_empty_exported_target
@@ -1809,8 +1848,11 @@ help:
 	@echo "... imagelistener_genlisp"
 	@echo "... imagelistener_genpy"
 	@echo "... imagelistener_node_client"
+	@echo "... imagelistener_node_client_automoc"
 	@echo "... imagelistener_node_server"
+	@echo "... imagelistener_node_server_automoc"
 	@echo "... imageviewer_node_server"
+	@echo "... imageviewer_node_server_automoc"
 	@echo "... _catkin_empty_exported_target"
 	@echo "... _camera_control_msgs_generate_messages_check_deps_GetCamProperties"
 	@echo "... _camera_control_msgs_generate_messages_check_deps_GrabAndSaveImageAction"

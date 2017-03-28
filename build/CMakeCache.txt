@@ -283,6 +283,9 @@ Project_SOURCE_DIR:STATIC=/home/tiva/catkin_ws/src
 //The directory containing a CMake configuration file for Pylon.
 Pylon_DIR:PATH=Pylon_DIR-NOTFOUND
 
+//The directory containing a CMake configuration file for Qt5Charts.
+Qt5Charts_DIR:PATH=Qt5Charts_DIR-NOTFOUND
+
 //The directory containing a CMake configuration file for Qt5Core.
 Qt5Core_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Core
 
