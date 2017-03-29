@@ -1,0 +1,8 @@
+prefix=/home/tiva/catkin_ws/devel
+
+Name: imagesubscriber
+Description: Description of imagesubscriber
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/tiva/catkin_ws/devel/lib 
+Requires: 

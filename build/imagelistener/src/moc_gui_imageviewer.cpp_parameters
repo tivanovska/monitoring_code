@@ -1,0 +1,11 @@
+-I/home/tiva/catkin_ws/devel/include
+-I/usr/include
+-I/home/tiva/catkin_ws/src/imagelistener/include
+-I/home/tiva/catkin_ws/src/imagelistener
+-I/home/tiva/catkin_ws/build/imagelistener
+-DROS_BUILD_SHARED_LIBS=1
+-DROS_PACKAGE_NAME="imagelistener"
+-DROSCONSOLE_BACKEND_LOG4CXX
+-o
+/home/tiva/catkin_ws/build/imagelistener/src/moc_gui_imageviewer.cpp
+/home/tiva/catkin_ws/src/imagelistener/src/gui_imageviewer.cpp
