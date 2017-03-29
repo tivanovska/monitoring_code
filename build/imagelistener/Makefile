@@ -469,6 +469,30 @@ include/moc_gui_imageviewer.cpp.s:
 	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/include/moc_gui_imageviewer.cpp.s
 .PHONY : include/moc_gui_imageviewer.cpp.s
 
+include/moc_qnode.o: include/moc_qnode.cpp.o
+.PHONY : include/moc_qnode.o
+
+# target to build an object file
+include/moc_qnode.cpp.o:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/include/moc_qnode.cpp.o
+.PHONY : include/moc_qnode.cpp.o
+
+include/moc_qnode.i: include/moc_qnode.cpp.i
+.PHONY : include/moc_qnode.i
+
+# target to preprocess a source file
+include/moc_qnode.cpp.i:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/include/moc_qnode.cpp.i
+.PHONY : include/moc_qnode.cpp.i
+
+include/moc_qnode.s: include/moc_qnode.cpp.s
+.PHONY : include/moc_qnode.s
+
+# target to generate assembly for a file
+include/moc_qnode.cpp.s:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/include/moc_qnode.cpp.s
+.PHONY : include/moc_qnode.cpp.s
+
 src/gui_imageviewer.o: src/gui_imageviewer.cpp.o
 .PHONY : src/gui_imageviewer.o
 
@@ -565,6 +589,30 @@ src/imageviewer_node.cpp.s:
 	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/src/imageviewer_node.cpp.s
 .PHONY : src/imageviewer_node.cpp.s
 
+src/qnode.o: src/qnode.cpp.o
+.PHONY : src/qnode.o
+
+# target to build an object file
+src/qnode.cpp.o:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/src/qnode.cpp.o
+.PHONY : src/qnode.cpp.o
+
+src/qnode.i: src/qnode.cpp.i
+.PHONY : src/qnode.i
+
+# target to preprocess a source file
+src/qnode.cpp.i:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/src/qnode.cpp.i
+.PHONY : src/qnode.cpp.i
+
+src/qnode.s: src/qnode.cpp.s
+.PHONY : src/qnode.s
+
+# target to generate assembly for a file
+src/qnode.cpp.s:
+	cd /home/tiva/catkin_ws/build && $(MAKE) -f imagelistener/CMakeFiles/imageviewer_node_server.dir/build.make imagelistener/CMakeFiles/imageviewer_node_server.dir/src/qnode.cpp.s
+.PHONY : src/qnode.cpp.s
+
 src/ugoe_monitoringprocessor.o: src/ugoe_monitoringprocessor.cpp.o
 .PHONY : src/ugoe_monitoringprocessor.o
 
@@ -630,6 +678,9 @@ help:
 	@echo "... include/moc_gui_imageviewer.o"
 	@echo "... include/moc_gui_imageviewer.i"
 	@echo "... include/moc_gui_imageviewer.s"
+	@echo "... include/moc_qnode.o"
+	@echo "... include/moc_qnode.i"
+	@echo "... include/moc_qnode.s"
 	@echo "... src/gui_imageviewer.o"
 	@echo "... src/gui_imageviewer.i"
 	@echo "... src/gui_imageviewer.s"
@@ -642,6 +693,9 @@ help:
 	@echo "... src/imageviewer_node.o"
 	@echo "... src/imageviewer_node.i"
 	@echo "... src/imageviewer_node.s"
+	@echo "... src/qnode.o"
+	@echo "... src/qnode.i"
+	@echo "... src/qnode.s"
 	@echo "... src/ugoe_monitoringprocessor.o"
 	@echo "... src/ugoe_monitoringprocessor.i"
 	@echo "... src/ugoe_monitoringprocessor.s"

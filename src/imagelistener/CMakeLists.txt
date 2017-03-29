@@ -164,8 +164,10 @@ target_link_libraries(imagelistener_node_client
 target_link_libraries(imagelistener_node_client
    ${OpenCV_LIBS})
 ###################################
-set(imageviewer_node_server_SRCS src/imageviewer_node.cpp src/gui_imageviewer.cpp)
-set(imageviewer_node_server_MOC_HDRS include/gui_imageviewer.h)
+set(imageviewer_node_server_SRCS src/imageviewer_node.cpp
+src/gui_imageviewer.cpp src/qnode.cpp)
+set(imageviewer_node_server_MOC_HDRS include/gui_imageviewer.h
+include/qnode.hpp)
 
 qt5_wrap_cpp(imageviewer_node_server_SRCS ${imageviewer_node_server_MOC_HDRS})
 add_executable(imageviewer_node_server ${imageviewer_node_server_SRCS}
