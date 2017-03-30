@@ -66,6 +66,7 @@ bool QNode::showImagesCb(imagelistener::imageViewing:: Request & req,
        img = cv::imread(targetFile.string()); 
        boost::filesystem::remove(targetFile);
        ROS_INFO("File is read and deleted!");
+       simVal = req.maxSimVal;
    //    gui_main->loadNewImage(img_init);
      }
    }

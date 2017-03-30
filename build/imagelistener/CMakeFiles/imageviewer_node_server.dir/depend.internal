@@ -446,6 +446,7 @@ imagelistener/CMakeFiles/imageviewer_node_server.dir/include/moc_gui_imageviewer
  /usr/include/qt5/QtWidgets/QLabel
  /usr/include/qt5/QtWidgets/QMainWindow
  /usr/include/qt5/QtWidgets/QScrollArea
+ /usr/include/qt5/QtWidgets/QTabWidget
  /usr/include/qt5/QtWidgets/qabstractscrollarea.h
  /usr/include/qt5/QtWidgets/qboxlayout.h
  /usr/include/qt5/QtWidgets/qframe.h
@@ -1095,6 +1096,7 @@ imagelistener/CMakeFiles/imageviewer_node_server.dir/src/gui_imageviewer.cpp.o
  /usr/include/qt5/QtWidgets/QLabel
  /usr/include/qt5/QtWidgets/QMainWindow
  /usr/include/qt5/QtWidgets/QScrollArea
+ /usr/include/qt5/QtWidgets/QTabWidget
  /usr/include/qt5/QtWidgets/qabstractscrollarea.h
  /usr/include/qt5/QtWidgets/qapplication.h
  /usr/include/qt5/QtWidgets/qboxlayout.h
@@ -1553,6 +1555,7 @@ imagelistener/CMakeFiles/imageviewer_node_server.dir/src/imageviewer_node.cpp.o
  /usr/include/qt5/QtWidgets/QLabel
  /usr/include/qt5/QtWidgets/QMainWindow
  /usr/include/qt5/QtWidgets/QScrollArea
+ /usr/include/qt5/QtWidgets/QTabWidget
  /usr/include/qt5/QtWidgets/qabstractscrollarea.h
  /usr/include/qt5/QtWidgets/qapplication.h
  /usr/include/qt5/QtWidgets/qboxlayout.h

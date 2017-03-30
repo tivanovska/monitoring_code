@@ -1,2 +1,3 @@
 string path_to_tmp_img
+float32 maxSimVal
 ---

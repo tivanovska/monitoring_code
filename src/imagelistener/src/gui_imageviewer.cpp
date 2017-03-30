@@ -16,15 +16,61 @@
 
 GUI_ImageViewer::GUI_ImageViewer (int argc, char** argv, QWidget * parent): QMainWindow(parent), qnode(argc,argv)
 {
-  imageLabel = new QLabel;
-  imageLabel->setBackgroundRole(QPalette::Base);
-  imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-  imageLabel->setScaledContents(true);
+
+  tabWidget = new QTabWidget();
+  QWidget * matchW = new QWidget();
+  QWidget * measureW = new QWidget();
+  tabWidget->addTab(matchW, tr("Matching"));
+  tabWidget->addTab(measureW, tr("Measuring"));
+  //COMPONENTS FOR PATTERN MATCHING WIDGET 
+  QVBoxLayout *vlayout = new QVBoxLayout;
+  QHBoxLayout *hlayout = new QHBoxLayout;
+
+  similarityValue = new QLabel("Max Similarity Value: ");
+  similarityValue->updatesEnabled();
+
+
+
+   
+  scrollAreaTempl = new QScrollArea;
+  scrollAreaTempl->setBackgroundRole(QPalette::Dark);
+  scrollAreaRoi = new QScrollArea;
+  scrollAreaRoi->setBackgroundRole(QPalette::Dark);
+  hlayout->addWidget (scrollAreaTempl);
+  hlayout->addWidget(scrollAreaRoi);
+  vlayout->addLayout(hlayout);
+  vlayout->addWidget(similarityValue);
+  matchW->setLayout(vlayout);
   
-  scrollArea = new QScrollArea;
-  scrollArea->setBackgroundRole(QPalette::Dark);
-  scrollArea->setWidget(imageLabel);
-  setCentralWidget(scrollArea);
+
+  
+  imageLabelTempl = new QLabel("Template Image");
+  imageLabelTempl->setBackgroundRole(QPalette::Base);
+  imageLabelTempl->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+  imageLabelTempl->setScaledContents(true);
+  
+  
+  imageLabelRoi = new QLabel("Extracted Pattern Image");
+  imageLabelRoi->setBackgroundRole(QPalette::Base);
+  imageLabelRoi->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+  imageLabelRoi->setScaledContents(true);
+  imageLabelTempl->updatesEnabled();
+  imageLabelRoi->updatesEnabled();
+
+    
+  //QLabel * tLabel1 = new QLabel("Template Image");
+
+  //QLabel * tLabel2 = new QLabel("Extracted Pattern Image");
+  //Q
+//  scrollArea = new QScrollArea;
+//  scrollArea->setBackgroundRole(QPalette::Dark);
+  scrollAreaTempl->setWidget(imageLabelTempl);
+  scrollAreaRoi->setWidget(imageLabelRoi);
+  scrollAreaTempl->setToolTip("Template Image");
+
+  scrollAreaRoi->setToolTip("Extracted Pattern Image");
+  //
+  setCentralWidget(tabWidget);
 
 
   setWindowTitle (tr("Image Viewer"));
@@ -41,13 +87,15 @@ GUI_ImageViewer::GUI_ImageViewer (int argc, char** argv, QWidget * parent): QMai
     _img = cv::imread(targetFile.string()); 
   }
   std::cout<<"image size:"<<_img.rows<<" "<<_img.cols<<std::endl;
-  imagePreview = new QPixmap;
-  imageLabel->updatesEnabled();
   cv::cvtColor( _img, _img, CV_BGR2RGB );
   imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
       _img.step, QImage::Format_RGB888);
-  imageLabel->setPixmap(QPixmap::fromImage(imgToShow));
-  imageLabel->resize(1.0 * imageLabel->pixmap()->size());
+  imageLabelTempl->setPixmap(QPixmap::fromImage(imgToShow));
+  imageLabelTempl->resize(1.0 * imageLabelTempl->pixmap()->size());
+
+  imageLabelRoi->setPixmap(QPixmap::fromImage(imgToShow));
+  imageLabelRoi->resize(1.0 * imageLabelRoi->pixmap()->size());
+
 
   QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
   QObject::connect(&qnode, SIGNAL(imageUpdated()),this, SLOT(loadNewImage()));
@@ -61,10 +109,12 @@ void GUI_ImageViewer::loadNewImage()
   cv::cvtColor( _img, _img, CV_BGR2RGB );
   imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
       _img.step, QImage::Format_RGB888);
-  imageLabel->setPixmap(QPixmap::fromImage(imgToShow));
-  imageLabel->resize(1.0 * imageLabel->pixmap()->size());
-
-  imageLabel->update();
+  imageLabelTempl->setPixmap(QPixmap::fromImage(imgToShow));
+  imageLabelTempl->resize(1.0 * imageLabelTempl->pixmap()->size());
+  imageLabelTempl->update();
+  
+  similarityValue->setText("Max Similarity Value: "+ QString::number(qnode.simVal));
+  similarityValue->update();
 
 }
 
@@ -76,11 +126,15 @@ void GUI_ImageViewer::closeEvent(QCloseEvent * event)
 GUI_ImageViewer::~GUI_ImageViewer ()
 
 {
-	delete [] imagePreview;
 
-	delete [] imageLabel;
+	delete [] imageLabelTempl;
+	delete [] imageLabelRoi;
+  delete [] similarityValue;
 
-	delete [] scrollArea;
+	delete [] scrollAreaTempl;
+	delete [] scrollAreaRoi;
+
+  delete [] tabWidget;
 }
 
 

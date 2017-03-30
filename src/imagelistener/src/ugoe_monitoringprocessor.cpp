@@ -320,7 +320,8 @@ cv::waitKey(0);
 void  Monitoring:: execute_monitoring(
                           imagelistener::exampleImageProcessing:: Request & req,
                           imagelistener::exampleImageProcessing:: Response & res,
-                          cv::Mat & current_image)
+                          cv::Mat & current_image,
+                          float & maxSimVal)
 {
       cv::Mat templ_image;
       cv::Mat templ_mask;
@@ -350,6 +351,7 @@ void  Monitoring:: execute_monitoring(
         matchLoc = maxLoc;
         std::cout<<"Max val matching:" <<maxVal<< " Min val matching:"<< minVal << std::endl;
         std::cout<<"Match loc:[x,y]:"<<matchLoc.x<<" "<<matchLoc.y<<std::endl;
+        maxSimVal = maxVal;
 
         if(maxVal>0.85)
         {

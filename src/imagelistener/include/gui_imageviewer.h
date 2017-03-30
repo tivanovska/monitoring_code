@@ -8,7 +8,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QMainWindow>
-
+#include <QTabWidget>
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -36,11 +36,18 @@ public:
 public Q_SLOTS:
   void loadNewImage();
 private:
-  QLabel * imageLabel;
-  QPixmap * imagePreview;
-  QScrollArea * scrollArea;
+  QLabel * imageLabelTempl;
+  QLabel * imageLabelRoi;
+  QLabel * similarityValue;
+
+
+
+  QScrollArea * scrollAreaTempl;
+  QScrollArea * scrollAreaRoi;
 
   QGridLayout * layout;
+  QTabWidget * tabWidget;
+
   QImage imgToShow;
 
   QNode  qnode;

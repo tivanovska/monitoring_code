@@ -24,10 +24,12 @@ struct imageViewingRequest_
   typedef imageViewingRequest_<ContainerAllocator> Type;
 
   imageViewingRequest_()
-    : path_to_tmp_img()  {
+    : path_to_tmp_img()
+    , maxSimVal(0.0)  {
     }
   imageViewingRequest_(const ContainerAllocator& _alloc)
-    : path_to_tmp_img(_alloc)  {
+    : path_to_tmp_img(_alloc)
+    , maxSimVal(0.0)  {
   (void)_alloc;
     }
 
@@ -35,6 +37,9 @@ struct imageViewingRequest_
 
    typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _path_to_tmp_img_type;
   _path_to_tmp_img_type path_to_tmp_img;
+
+   typedef float _maxSimVal_type;
+  _maxSimVal_type maxSimVal;
 
 
 
@@ -113,12 +118,12 @@ struct MD5Sum< ::imagelistener::imageViewingRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "85e96dcb3e9ec0d1d52bc366c68bab59";
+    return "9bcd3c971dc9a992e6146aaf6c22043b";
   }
 
   static const char* value(const ::imagelistener::imageViewingRequest_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x85e96dcb3e9ec0d1ULL;
-  static const uint64_t static_value2 = 0xd52bc366c68bab59ULL;
+  static const uint64_t static_value1 = 0x9bcd3c971dc9a992ULL;
+  static const uint64_t static_value2 = 0xe6146aaf6c22043bULL;
 };
 
 template<class ContainerAllocator>
@@ -138,6 +143,7 @@ struct Definition< ::imagelistener::imageViewingRequest_<ContainerAllocator> >
   static const char* value()
   {
     return "string path_to_tmp_img\n\
+float32 maxSimVal\n\
 ";
   }
 
@@ -157,6 +163,7 @@ namespace serialization
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
       stream.next(m.path_to_tmp_img);
+      stream.next(m.maxSimVal);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -177,6 +184,8 @@ struct Printer< ::imagelistener::imageViewingRequest_<ContainerAllocator> >
   {
     s << indent << "path_to_tmp_img: ";
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.path_to_tmp_img);
+    s << indent << "maxSimVal: ";
+    Printer<float>::stream(s, indent + "  ", v.maxSimVal);
   }
 };
 

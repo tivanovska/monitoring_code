@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::imagelistener::imageViewing > {
   static const char* value()
   {
-    return "85e96dcb3e9ec0d1d52bc366c68bab59";
+    return "9bcd3c971dc9a992e6146aaf6c22043b";
   }
 
   static const char* value(const ::imagelistener::imageViewing&) { return value(); }

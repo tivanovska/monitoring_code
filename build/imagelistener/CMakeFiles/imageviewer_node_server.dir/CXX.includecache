@@ -61,6 +61,8 @@ QLabel
 -
 QMainWindow
 -
+QTabWidget
+-
 opencv2/core.hpp
 -
 opencv2/highgui.hpp
@@ -4317,6 +4319,10 @@ qmainwindow.h
 /usr/include/qt5/QtWidgets/QScrollArea
 qscrollarea.h
 /usr/include/qt5/QtWidgets/qscrollarea.h
+
+/usr/include/qt5/QtWidgets/QTabWidget
+qtabwidget.h
+/usr/include/qt5/QtWidgets/qtabwidget.h
 
 /usr/include/qt5/QtWidgets/qabstractscrollarea.h
 QtWidgets/qframe.h

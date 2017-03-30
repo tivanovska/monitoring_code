@@ -39,6 +39,7 @@ class QNode: public QThread
     const std::string& nodeName() {return node_name;}
 
     cv::Mat img;
+    float simVal;
 
   Q_SIGNALS:
     void rosShutdown();
