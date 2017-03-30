@@ -11,7 +11,9 @@ QNode::QNode (int argc, char** argv):
           init_argc(argc),
           init_argv(argv)
           {
-               img= cv::Mat::zeros( cv::Size(100,100), CV_8UC3 );
+               img_templ= cv::Mat::zeros( cv::Size(100,100), CV_8UC3 );
+
+               img_roi= cv::Mat::zeros( cv::Size(100,100), CV_8UC3 );
 
           }
 QNode::~QNode() {
@@ -56,16 +58,25 @@ bool QNode::showImagesCb(imagelistener::imageViewing:: Request & req,
   try
    {
      std::string s = boost::lexical_cast<std::string>(req.path_to_tmp_img);
-     std::string path_t = s+"/init.png";
+     std::string path_t_templ = s+"/templ.png";
 
-     boost::filesystem::path targetFile(path_t);
+     std::string path_t_roi = s+"/roi.png";
+
+     boost::filesystem::path targetFileTempl(path_t_templ);
+     boost::filesystem::path targetFileRoi(path_t_roi);
     
-     if(boost::filesystem::exists(targetFile) &&
-     boost::filesystem::is_regular_file(targetFile)) 
+     if(boost::filesystem::exists(targetFileTempl) &&
+     boost::filesystem::is_regular_file(targetFileTempl)&& 
+     boost::filesystem::exists(targetFileRoi) &&
+     boost::filesystem::is_regular_file(targetFileRoi)) 
      {
-       img = cv::imread(targetFile.string()); 
-       boost::filesystem::remove(targetFile);
-       ROS_INFO("File is read and deleted!");
+       img_templ = cv::imread(targetFileTempl.string()); 
+       boost::filesystem::remove(targetFileTempl);
+       img_roi = cv::imread(targetFileRoi.string()); 
+       boost::filesystem::remove(targetFileRoi);
+
+
+       ROS_INFO("Files are read and deleted!");
        simVal = req.maxSimVal;
    //    gui_main->loadNewImage(img_init);
      }

@@ -321,7 +321,9 @@ void  Monitoring:: execute_monitoring(
                           imagelistener::exampleImageProcessing:: Request & req,
                           imagelistener::exampleImageProcessing:: Response & res,
                           cv::Mat & current_image,
-                          float & maxSimVal)
+                          float & maxSimVal,
+                          cv::Mat & templ_out,
+                          cv::Mat & roi_out)
 {
       cv::Mat templ_image;
       cv::Mat templ_mask;
@@ -353,34 +355,20 @@ void  Monitoring:: execute_monitoring(
         std::cout<<"Match loc:[x,y]:"<<matchLoc.x<<" "<<matchLoc.y<<std::endl;
         maxSimVal = maxVal;
 
+        cv::Rect r (matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
+        cv::Mat roi = img_display(r).clone();
+        roi_out = roi.clone();
+        templ_out = templ_image.clone();
+
         if(maxVal>0.85)
         {
           ROS_INFO("Template is OK detected! Start comparison according to the operation sent...");
-          
-          cv::Rect r (matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
-          cv::Mat roi = img_display(r).clone();
           
           analyzeROI(roi, templ_image, req.ID_Operation, res);
 
           res.Im_Width = current_image.cols;
           res.Im_Height = current_image.rows;
           res.Mon_result.operation_type = (long int)req.ID_Operation;
-          
-
-
-    
-          //matchTemplate( roi_gray, tmp_gray, result_gray, CV_TM_CCOEFF_NORMED/*,templ_mask*/);
-
-          
-
-
-
-//          /*          rectangle( img_display, matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ), CV_RGB(255, 255, 255), 0.5 );*/
-          cv::namedWindow("MatchingResult",CV_WINDOW_NORMAL);
-          cv::imshow("MatchingResult", roi);
-          cv::waitKey(0);
-       //   cv::imwrite("roi.png",roi);
-
         }
         else
         if(maxVal<=0.85&& maxVal>0.5)

@@ -105,14 +105,23 @@ GUI_ImageViewer::GUI_ImageViewer (int argc, char** argv, QWidget * parent): QMai
 
 void GUI_ImageViewer::loadNewImage()
 {
-  cv::Mat _img = qnode.img.clone(); 
+  // update template viewer
+  cv::Mat _img = qnode.img_templ.clone(); 
   cv::cvtColor( _img, _img, CV_BGR2RGB );
   imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
       _img.step, QImage::Format_RGB888);
   imageLabelTempl->setPixmap(QPixmap::fromImage(imgToShow));
   imageLabelTempl->resize(1.0 * imageLabelTempl->pixmap()->size());
   imageLabelTempl->update();
-  
+  // update roi viewer
+  _img = qnode.img_roi.clone(); 
+  cv::cvtColor( _img, _img, CV_BGR2RGB );
+  imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
+      _img.step, QImage::Format_RGB888);
+  imageLabelRoi->setPixmap(QPixmap::fromImage(imgToShow));
+  imageLabelRoi->resize(1.0 * imageLabelRoi->pixmap()->size());
+  imageLabelRoi->update();
+  //update similarity value label
   similarityValue->setText("Max Similarity Value: "+ QString::number(qnode.simVal));
   similarityValue->update();
 

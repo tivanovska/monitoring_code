@@ -38,7 +38,8 @@ class QNode: public QThread
     void run();
     const std::string& nodeName() {return node_name;}
 
-    cv::Mat img;
+    cv::Mat img_templ;
+    cv::Mat img_roi;
     float simVal;
 
   Q_SIGNALS:

@@ -104,7 +104,9 @@ class Monitoring
   void execute_monitoring(imagelistener::exampleImageProcessing:: Request & req,
                           imagelistener::exampleImageProcessing:: Response & res, 
                           cv::Mat & current_image,
-                          float & maxSimVal);
+                          float & maxSimVal,
+                          cv::Mat & templ,
+                          cv::Mat & roi);
   
 
 
