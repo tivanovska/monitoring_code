@@ -25,11 +25,15 @@ struct imageViewingRequest_
 
   imageViewingRequest_()
     : path_to_tmp_img()
-    , maxSimVal(0.0)  {
+    , maxSimVal(0.0)
+    , measurment(0.0)
+    , detailStatus(0)  {
     }
   imageViewingRequest_(const ContainerAllocator& _alloc)
     : path_to_tmp_img(_alloc)
-    , maxSimVal(0.0)  {
+    , maxSimVal(0.0)
+    , measurment(0.0)
+    , detailStatus(0)  {
   (void)_alloc;
     }
 
@@ -40,6 +44,12 @@ struct imageViewingRequest_
 
    typedef float _maxSimVal_type;
   _maxSimVal_type maxSimVal;
+
+   typedef float _measurment_type;
+  _measurment_type measurment;
+
+   typedef int64_t _detailStatus_type;
+  _detailStatus_type detailStatus;
 
 
 
@@ -118,12 +128,12 @@ struct MD5Sum< ::imagelistener::imageViewingRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "9bcd3c971dc9a992e6146aaf6c22043b";
+    return "9c2d5dc53489f762d614845df98943f1";
   }
 
   static const char* value(const ::imagelistener::imageViewingRequest_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x9bcd3c971dc9a992ULL;
-  static const uint64_t static_value2 = 0xe6146aaf6c22043bULL;
+  static const uint64_t static_value1 = 0x9c2d5dc53489f762ULL;
+  static const uint64_t static_value2 = 0xd614845df98943f1ULL;
 };
 
 template<class ContainerAllocator>
@@ -144,6 +154,8 @@ struct Definition< ::imagelistener::imageViewingRequest_<ContainerAllocator> >
   {
     return "string path_to_tmp_img\n\
 float32 maxSimVal\n\
+float32 measurment\n\
+int64 detailStatus\n\
 ";
   }
 
@@ -164,6 +176,8 @@ namespace serialization
     {
       stream.next(m.path_to_tmp_img);
       stream.next(m.maxSimVal);
+      stream.next(m.measurment);
+      stream.next(m.detailStatus);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -186,6 +200,10 @@ struct Printer< ::imagelistener::imageViewingRequest_<ContainerAllocator> >
     Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.path_to_tmp_img);
     s << indent << "maxSimVal: ";
     Printer<float>::stream(s, indent + "  ", v.maxSimVal);
+    s << indent << "measurment: ";
+    Printer<float>::stream(s, indent + "  ", v.measurment);
+    s << indent << "detailStatus: ";
+    Printer<int64_t>::stream(s, indent + "  ", v.detailStatus);
   }
 };
 

@@ -28,9 +28,6 @@ GUI_ImageViewer::GUI_ImageViewer (int argc, char** argv, QWidget * parent): QMai
 
   similarityValue = new QLabel("Max Similarity Value: ");
   similarityValue->updatesEnabled();
-
-
-
    
   scrollAreaTempl = new QScrollArea;
   scrollAreaTempl->setBackgroundRole(QPalette::Dark);
@@ -56,20 +53,25 @@ GUI_ImageViewer::GUI_ImageViewer (int argc, char** argv, QWidget * parent): QMai
   imageLabelRoi->setScaledContents(true);
   imageLabelTempl->updatesEnabled();
   imageLabelRoi->updatesEnabled();
-
-    
-  //QLabel * tLabel1 = new QLabel("Template Image");
-
-  //QLabel * tLabel2 = new QLabel("Extracted Pattern Image");
-  //Q
-//  scrollArea = new QScrollArea;
-//  scrollArea->setBackgroundRole(QPalette::Dark);
   scrollAreaTempl->setWidget(imageLabelTempl);
   scrollAreaRoi->setWidget(imageLabelRoi);
   scrollAreaTempl->setToolTip("Template Image");
-
   scrollAreaRoi->setToolTip("Extracted Pattern Image");
-  //
+  //  COMPONENTS FOR DETECTION WIDGET
+  QHBoxLayout * h1layout = new QHBoxLayout;
+  scrollAreaRes = new QScrollArea;
+  scrollAreaRes->setBackgroundRole(QPalette::Dark);
+
+  imageLabelRes = new QLabel ("Result Demonstration");
+  imageLabelRes->setBackgroundRole(QPalette::Base);
+  imageLabelRes->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+  imageLabelRes->setScaledContents(true);
+  imageLabelRes->updatesEnabled();
+  scrollAreaRes->setWidget(imageLabelRes);
+  scrollAreaRes->setToolTip("Result Demonstration");
+  h1layout->addWidget(scrollAreaRes);
+  measureW->setLayout(h1layout);
+
   setCentralWidget(tabWidget);
 
 
@@ -96,6 +98,11 @@ GUI_ImageViewer::GUI_ImageViewer (int argc, char** argv, QWidget * parent): QMai
   imageLabelRoi->setPixmap(QPixmap::fromImage(imgToShow));
   imageLabelRoi->resize(1.0 * imageLabelRoi->pixmap()->size());
 
+  
+  imageLabelRes->setPixmap(QPixmap::fromImage(imgToShow));
+  imageLabelRes->resize(1.0 * imageLabelRes->pixmap()->size());
+
+
 
   QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
   QObject::connect(&qnode, SIGNAL(imageUpdated()),this, SLOT(loadNewImage()));
@@ -121,6 +128,17 @@ void GUI_ImageViewer::loadNewImage()
   imageLabelRoi->setPixmap(QPixmap::fromImage(imgToShow));
   imageLabelRoi->resize(1.0 * imageLabelRoi->pixmap()->size());
   imageLabelRoi->update();
+  // update result demonstration
+  _img = qnode.img_res.clone(); 
+  cv::cvtColor( _img, _img, CV_BGR2RGB );
+  imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
+      _img.step, QImage::Format_RGB888);
+  imageLabelRes->setPixmap(QPixmap::fromImage(imgToShow));
+  imageLabelRes->resize(1.0 * imageLabelRes->pixmap()->size());
+  imageLabelRes->update();
+
+
+
   //update similarity value label
   similarityValue->setText("Max Similarity Value: "+ QString::number(qnode.simVal));
   similarityValue->update();
@@ -139,9 +157,11 @@ GUI_ImageViewer::~GUI_ImageViewer ()
 	delete [] imageLabelTempl;
 	delete [] imageLabelRoi;
   delete [] similarityValue;
+  delete [] imageLabelRes;
 
 	delete [] scrollAreaTempl;
 	delete [] scrollAreaRoi;
+  delete [] scrollAreaRes;
 
   delete [] tabWidget;
 }

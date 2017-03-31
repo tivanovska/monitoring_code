@@ -26,7 +26,7 @@
 #include <opencv2/core/utility.hpp>
 
 #include "imagelistener/exampleImageProcessing.h"
-
+#include "imagelistener/imageViewing.h"
 using namespace cv;
 using namespace cv::xfeatures2d;
 
@@ -52,7 +52,12 @@ class Monitoring
     *  according to the operation_id the correspondent analysis routines are called 
     *
     */
-   void analyzeROI(cv::Mat & roi, cv::Mat & templ, int op_id, imagelistener::exampleImageProcessing:: Response & res);
+   void analyzeROI(cv::Mat & roi, 
+                   cv::Mat & templ, 
+                   int op_id, 
+                   imagelistener::exampleImageProcessing:: Response & res,
+                   cv::Mat & res_out,
+                   imagelistener::imageViewing  & srv);
 
    // OpenCV routines for analysis of images, wrappers to be used in ReconCell
    //------------------------------------------------------------------------------------------------------------------
@@ -104,9 +109,10 @@ class Monitoring
   void execute_monitoring(imagelistener::exampleImageProcessing:: Request & req,
                           imagelistener::exampleImageProcessing:: Response & res, 
                           cv::Mat & current_image,
-                          float & maxSimVal,
                           cv::Mat & templ,
-                          cv::Mat & roi);
+                          cv::Mat & roi,
+                          cv::Mat & res_out, 
+                          imagelistener::imageViewing  & srv);
   
 
 

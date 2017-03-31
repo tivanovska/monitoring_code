@@ -14,6 +14,8 @@ QNode::QNode (int argc, char** argv):
                img_templ= cv::Mat::zeros( cv::Size(100,100), CV_8UC3 );
 
                img_roi= cv::Mat::zeros( cv::Size(100,100), CV_8UC3 );
+               img_res = cv::Mat::zeros( cv::Size(100,100), CV_8UC3 );
+
 
           }
 QNode::~QNode() {
@@ -62,33 +64,37 @@ bool QNode::showImagesCb(imagelistener::imageViewing:: Request & req,
 
      std::string path_t_roi = s+"/roi.png";
 
+     std::string path_t_result = s+"/result.png";
+
      boost::filesystem::path targetFileTempl(path_t_templ);
      boost::filesystem::path targetFileRoi(path_t_roi);
+
+     boost::filesystem::path targetFileRes(path_t_result);
     
      if(boost::filesystem::exists(targetFileTempl) &&
      boost::filesystem::is_regular_file(targetFileTempl)&& 
      boost::filesystem::exists(targetFileRoi) &&
-     boost::filesystem::is_regular_file(targetFileRoi)) 
+     boost::filesystem::is_regular_file(targetFileRoi) &&
+     boost::filesystem::exists(targetFileRes) &&
+     boost::filesystem::is_regular_file(targetFileRes)
+     ) 
      {
        img_templ = cv::imread(targetFileTempl.string()); 
        boost::filesystem::remove(targetFileTempl);
        img_roi = cv::imread(targetFileRoi.string()); 
        boost::filesystem::remove(targetFileRoi);
+       img_res = cv::imread(targetFileRes.string()); 
+       boost::filesystem::remove(targetFileRes);
 
 
        ROS_INFO("Files are read and deleted!");
        simVal = req.maxSimVal;
-   //    gui_main->loadNewImage(img_init);
      }
    }
    catch (const boost::filesystem::filesystem_error& ex)
    {
      ROS_ERROR("Error: %s",ex.what());
    }
- // cv::namedWindow("initroi", CV_WINDOW_NORMAL);
- // cv::imshow("initroi", img_init);
- // cv::waitKey(10);
-
     Q_EMIT imageUpdated();
     
     

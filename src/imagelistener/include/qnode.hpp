@@ -40,6 +40,7 @@ class QNode: public QThread
 
     cv::Mat img_templ;
     cv::Mat img_roi;
+    cv::Mat img_res;
     float simVal;
 
   Q_SIGNALS:

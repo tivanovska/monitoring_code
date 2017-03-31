@@ -134,17 +134,20 @@ public:
         imagelistener::imageViewing srv;
         cv::Mat templ;
         cv::Mat roi;
-        mon.execute_monitoring(req,res,currentImage, srv.request.maxSimVal, templ, roi);
+        cv::Mat result;
+        mon.execute_monitoring(req,res,currentImage, templ, roi, result, srv);
 
         cv::imwrite("/home/tiva/catkin_ws/tmp_imgs/templ.png", templ);
 
         cv::imwrite("/home/tiva/catkin_ws/tmp_imgs/roi.png", roi);
+
+        cv::imwrite("/home/tiva/catkin_ws/tmp_imgs/result.png", result);
         // call monitoring function
         
         // send request to display
         
         srv.request.path_to_tmp_img ="/home/tiva/catkin_ws/tmp_imgs" ;
-//        srv.request.maxSimVal = 0.5; 
+
         if (clientViewImages_.call(srv))
         {
           ROS_INFO("Service to display results is called");

@@ -24,6 +24,7 @@ set expandtab
 set fileencodings=utf-8,latin1
 set helplang=en
 set history=100
+set iminsert=0
 set incsearch
 set laststatus=2
 set mouse=a
@@ -37,7 +38,7 @@ set termencoding=utf-8
 set textwidth=78
 set viminfo='20,\"50
 set visualbell
-set window=62
+set window=64
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
@@ -46,16 +47,17 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +178 src/imagelistener_node.cpp
+badd +122 src/imagelistener_node.cpp
 badd +1 src/imagemonitoring_client.cpp
 badd +1 include/ugoe_monitoringprocessor.h
 badd +1 src/ugoe_monitoringprocessor.cpp
-badd +0 src/imageviewer_node.cpp
-badd +0 src/gui_imageviewer.cpp
-badd +0 include/gui_imageviewer.h
-badd +0 include/qnode.hpp
-badd +0 src/qnode.cpp
-badd +0 CMakeLists.txt
+badd +1 src/imageviewer_node.cpp
+badd +1 src/gui_imageviewer.cpp
+badd +1 include/gui_imageviewer.h
+badd +1 include/qnode.hpp
+badd +1 src/qnode.cpp
+badd +1 CMakeLists.txt
+badd +0 srv/imageViewing.srv
 args src/imagelistener_node.cpp
 edit src/imagemonitoring_client.cpp
 set splitbelow splitright
@@ -166,7 +168,7 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 15 - ((14 * winheight(0) + 30) / 61)
+let s:l = 15 - ((5 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -227,7 +229,7 @@ setlocal formatexpr=
 setlocal formatoptions=tcq
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal grepprg=
-setlocal iminsert=2
+setlocal iminsert=0
 setlocal imsearch=2
 setlocal include=
 setlocal includeexpr=
@@ -281,12 +283,26 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 122 - ((60 * winheight(0) + 30) / 61)
+40
+normal! zo
+102
+normal! zo
+102
+normal! zo
+148
+normal! zo
+148
+normal! zo
+148
+normal! zo
+148
+normal! zo
+let s:l = 133 - ((36 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-122
-normal! 024|
+133
+normal! 07|
 tabedit include/ugoe_monitoringprocessor.h
 set splitbelow splitright
 set nosplitbelow
@@ -331,7 +347,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=0
 setlocal foldignore=#
-setlocal foldlevel=3
+setlocal foldlevel=13
 setlocal foldmarker={{{,}}}
 set foldmethod=indent
 setlocal foldmethod=indent
@@ -342,7 +358,7 @@ setlocal formatexpr=
 setlocal formatoptions=tcq
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal grepprg=
-setlocal iminsert=2
+setlocal iminsert=0
 setlocal imsearch=2
 setlocal include=
 setlocal includeexpr=
@@ -396,12 +412,36 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 61 - ((53 * winheight(0) + 30) / 61)
+44
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+105
+normal! zo
+let s:l = 108 - ((35 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-61
-normal! 0
+108
+normal! 027|
 tabedit src/ugoe_monitoringprocessor.cpp
 set splitbelow splitright
 set nosplitbelow
@@ -457,7 +497,7 @@ setlocal formatexpr=
 setlocal formatoptions=tcq
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal grepprg=
-setlocal iminsert=2
+setlocal iminsert=0
 setlocal imsearch=2
 setlocal include=
 setlocal includeexpr=
@@ -511,12 +551,44 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 2 - ((1 * winheight(0) + 30) / 61)
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+321
+normal! zo
+328
+normal! zo
+328
+normal! zo
+328
+normal! zo
+348
+normal! zo
+let s:l = 366 - ((45 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-2
-normal! 0
+366
+normal! 010|
 tabedit src/imageviewer_node.cpp
 set splitbelow splitright
 set nosplitbelow
@@ -626,16 +698,12 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-38
-normal! zo
-38
-normal! zo
-let s:l = 67 - ((48 * winheight(0) + 30) / 61)
+let s:l = 21 - ((20 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-67
-normal! 045|
+21
+normal! 0
 tabedit include/qnode.hpp
 set splitbelow splitright
 set nosplitbelow
@@ -747,36 +815,32 @@ setlocal wrap
 setlocal wrapmargin=0
 32
 normal! zo
-34
-normal! zo
 35
 normal! zo
-41
+46
 normal! zo
-44
+54
 normal! zo
-52
+54
 normal! zo
-52
+54
 normal! zo
-52
+54
 normal! zo
-52
+54
 normal! zo
-52
+54
 normal! zo
-52
+54
 normal! zo
-52
+54
 normal! zo
-52
-normal! zo
-let s:l = 45 - ((44 * winheight(0) + 30) / 61)
+let s:l = 42 - ((15 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-45
-normal! 010|
+42
+normal! 020|
 tabedit src/qnode.cpp
 set splitbelow splitright
 set nosplitbelow
@@ -900,80 +964,177 @@ normal! zo
 normal! zo
 14
 normal! zo
-17
+16
 normal! zo
-17
-normal! zo
-17
-normal! zo
-18
-normal! zo
-18
+16
 normal! zo
 20
 normal! zo
-29
+20
 normal! zo
-29
+22
 normal! zo
-32
+31
 normal! zo
-44
+31
 normal! zo
-49
+34
 normal! zo
-53
+46
 normal! zo
-53
+55
 normal! zo
-53
+55
 normal! zo
-53
+55
 normal! zo
-53
+55
 normal! zo
-53
+55
 normal! zo
-53
+55
 normal! zo
-53
+55
 normal! zo
-53
+55
 normal! zo
-54
-normal! zo
-54
-normal! zo
-54
-normal! zo
-54
-normal! zo
-54
-normal! zo
-54
-normal! zo
-54
-normal! zo
-56
+55
 normal! zo
 58
 normal! zo
-66
+60
 normal! zo
-70
+73
 normal! zo
-74
+82
 normal! zo
-80
+86
 normal! zo
-80
+92
 normal! zo
-let s:l = 45 - ((41 * winheight(0) + 30) / 61)
+92
+normal! zo
+let s:l = 71 - ((43 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-45
-normal! 04|
+71
+normal! 055|
+tabedit srv/imageViewing.srv
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal keymap=
+setlocal noarabic
+setlocal autoindent
+setlocal balloonexpr=
+setlocal nobinary
+setlocal bufhidden=
+setlocal buflisted
+setlocal buftype=
+setlocal nocindent
+setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
+setlocal cinoptions=
+setlocal cinwords=if,else,while,do,for,switch
+setlocal colorcolumn=
+setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
+setlocal commentstring=/*%s*/
+setlocal complete=.,w,b,u,t,i
+setlocal concealcursor=
+setlocal conceallevel=0
+setlocal completefunc=
+setlocal nocopyindent
+setlocal cryptmethod=
+setlocal nocursorbind
+setlocal nocursorcolumn
+setlocal nocursorline
+setlocal define=
+setlocal dictionary=
+setlocal nodiff
+setlocal equalprg=
+setlocal errorformat=
+setlocal expandtab
+if &filetype != ''
+setlocal filetype=
+endif
+setlocal foldcolumn=0
+setlocal foldenable
+setlocal foldexpr=0
+setlocal foldignore=#
+setlocal foldlevel=0
+setlocal foldmarker={{{,}}}
+set foldmethod=indent
+setlocal foldmethod=indent
+setlocal foldminlines=1
+setlocal foldnestmax=20
+setlocal foldtext=foldtext()
+setlocal formatexpr=
+setlocal formatoptions=tcq
+setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
+setlocal grepprg=
+setlocal iminsert=0
+setlocal imsearch=2
+setlocal include=
+setlocal includeexpr=
+setlocal indentexpr=
+setlocal indentkeys=0{,0},:,0#,!^F,o,O,e
+setlocal noinfercase
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=
+setlocal nolinebreak
+setlocal nolisp
+setlocal nolist
+setlocal makeprg=
+setlocal matchpairs=(:),{:},[:]
+setlocal modeline
+setlocal modifiable
+setlocal nrformats=octal,hex
+set number
+setlocal number
+setlocal numberwidth=4
+setlocal omnifunc=
+setlocal path=
+setlocal nopreserveindent
+setlocal nopreviewwindow
+setlocal quoteescape=\\
+setlocal noreadonly
+setlocal norelativenumber
+setlocal norightleft
+setlocal rightleftcmd=search
+setlocal noscrollbind
+setlocal shiftwidth=2
+setlocal noshortname
+setlocal nosmartindent
+setlocal softtabstop=0
+setlocal nospell
+setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
+setlocal spellfile=
+setlocal spelllang=en
+setlocal statusline=
+setlocal suffixesadd=
+setlocal swapfile
+setlocal synmaxcol=3000
+if &syntax != ''
+setlocal syntax=
+endif
+setlocal tabstop=2
+setlocal tags=
+setlocal textwidth=78
+setlocal thesaurus=
+setlocal noundofile
+setlocal nowinfixheight
+setlocal nowinfixwidth
+setlocal wrap
+setlocal wrapmargin=0
+let s:l = 2 - ((1 * winheight(0) + 31) / 63)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+2
+normal! 09|
 tabedit CMakeLists.txt
 set splitbelow splitright
 set nosplitbelow
@@ -1083,7 +1244,7 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 168 - ((19 * winheight(0) + 30) / 61)
+let s:l = 168 - ((7 * winheight(0) + 11) / 22)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -1198,18 +1359,20 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-19
+67
 normal! zo
-39
+85
 normal! zo
-60
+108
 normal! zo
-let s:l = 66 - ((44 * winheight(0) + 30) / 61)
+120
+normal! zo
+let s:l = 125 - ((39 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-66
-normal! 0
+125
+normal! 083|
 tabedit include/gui_imageviewer.h
 set splitbelow splitright
 set nosplitbelow
@@ -1319,13 +1482,13 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 37 - ((36 * winheight(0) + 30) / 61)
+let s:l = 41 - ((40 * winheight(0) + 31) / 63)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-37
-normal! 021|
-tabnext 9
+41
+normal! 012|
+tabnext 11
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
 endif

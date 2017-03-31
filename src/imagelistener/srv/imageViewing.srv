@@ -1,3 +1,5 @@
 string path_to_tmp_img
 float32 maxSimVal
+float32 measurment
+int64 detailStatus
 ---

@@ -39,13 +39,14 @@ private:
   QLabel * imageLabelTempl;
   QLabel * imageLabelRoi;
   QLabel * similarityValue;
+  QLabel * imageLabelRes;
 
 
 
   QScrollArea * scrollAreaTempl;
   QScrollArea * scrollAreaRoi;
+  QScrollArea * scrollAreaRes;
 
-  QGridLayout * layout;
   QTabWidget * tabWidget;
 
   QImage imgToShow;
