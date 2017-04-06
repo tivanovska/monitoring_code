@@ -194,6 +194,9 @@ void  Monitoring:: analyzeROI(cv::Mat & curr_img,
     Rect r = boundingRect(only2);
     rectangle( res_out, r.tl(), r.br(), Scalar(0,255,0), 2, 8, 0 );
     ROS_INFO("Screw length (px) %d",r.height);
+    srv.measurment = r.height;
+    srv.detailStatus = 1;
+
  
   //  Mat color_mask;
 //    cvtColor(only2,color_mask, CV_GRAY2RGB);
@@ -285,6 +288,9 @@ void  Monitoring:: execute_monitoring(
             res.Mon_result.operation_type = (long int)req.ID_Operation;
             res.Mon_result.detail_detected = 1;
             res.Mon_result.detail_ok = 0;
+            srv.measurment = -1;
+            srv.detailStatus = 0;
+
         }
         else
         {
@@ -293,6 +299,8 @@ void  Monitoring:: execute_monitoring(
           res.Im_Height = -1;
           res.Mon_result.operation_type = (long int)req.ID_Operation;
           res.Mon_result.detail_detected = -1;
+          srv.measurment = -1;
+          srv.detailStatus = -1;
 
         }
 
