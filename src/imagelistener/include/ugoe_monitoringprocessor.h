@@ -52,8 +52,10 @@ class Monitoring
     *  according to the operation_id the correspondent analysis routines are called 
     *
     */
-   void analyzeROI(cv::Mat & roi, 
-                   cv::Mat & templ, 
+   void analyzeROI(cv::Mat & curr_img,
+                   cv::Mat & roi, 
+                   cv::Mat & templ,
+                   cv::Mat & templ_mask,
                    int op_id, 
                    imagelistener::exampleImageProcessing:: Response & res,
                    cv::Mat & res_out,

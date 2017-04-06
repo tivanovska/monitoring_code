@@ -17,21 +17,21 @@
    {
      std::string s = boost::lexical_cast<std::string>(template_id);
      std::string path_t = path_to_templates+"/"+s+".png";
-    // std::string path_t_mask = path_to_templates+"/"+s+"_mask.png";
+     std::string path_t_mask = path_to_templates+"/"+s+"_mask.png";
      std::cout<<path_t<<std::endl;
      boost::filesystem::path
      targetFile(path_t);
     
-    // boost::filesystem::path
-    // targetMaskFile(path_t_mask);
+     boost::filesystem::path
+     targetMaskFile(path_t_mask);
 
 
      if(boost::filesystem::exists(targetFile) &&
-     boost::filesystem::is_regular_file(targetFile)/*&& boost::filesystem::exists(targetMaskFile) &&
-     boost::filesystem::is_regular_file(targetMaskFile)*/) 
+     boost::filesystem::is_regular_file(targetFile)&& boost::filesystem::exists(targetMaskFile) &&
+     boost::filesystem::is_regular_file(targetMaskFile)) 
      {
        template_found = cv::imread(targetFile.string()); 
-      // mask_found = cv::imread(targetMaskFile.string()); 
+       mask_found = cv::imread(targetMaskFile.string()); 
      }
    }
    catch (const boost::filesystem::filesystem_error& ex)
@@ -45,8 +45,10 @@
     *  according to the operation_id the correspondent analysis routines are called 
     *
     */
-void  Monitoring:: analyzeROI(cv::Mat & roi, 
+void  Monitoring:: analyzeROI(cv::Mat & curr_img,
+                              cv::Mat & roi, 
                               cv::Mat & templ, 
+                              cv::Mat & mask,
                               int op_id, 
                               imagelistener::exampleImageProcessing:: Response & res,
                               cv::Mat & res_out,
@@ -90,6 +92,116 @@ void  Monitoring:: analyzeROI(cv::Mat & roi,
       }
 
   }
+  if(op_id== 2) // analyze big hole 
+  {
+      cv::Mat masked_templ;
+      templ.copyTo(masked_templ,mask);
+      cv::Mat masked_roi;
+      roi.copyTo(masked_roi,mask);
+
+      cv::cvtColor(masked_roi, masked_roi, CV_BGR2HSV);
+      cv::cvtColor(masked_templ, masked_templ, CV_BGR2HSV);
+
+      cv::Mat diffImage;
+      cv::absdiff(masked_roi, masked_templ, diffImage);
+
+      cv::Mat foregroundMask = cv::Mat::zeros(diffImage.rows, diffImage.cols, CV_8UC1);
+
+      float threshold = 100.0f;
+      float dist;
+
+      for(int j=0; j<diffImage.rows; ++j)
+        for(int i=0; i<diffImage.cols; ++i)
+        {
+          cv::Vec3b pix = diffImage.at<cv::Vec3b>(j,i);
+
+          dist = (pix[0]*pix[0] + pix[1]*pix[1] + pix[2]*pix[2]);
+          dist = sqrt(dist);
+
+          if(dist>threshold)
+          {
+            foregroundMask.at<unsigned char>(j,i) = 255;
+          }
+        }
+      int nonZCnt = cv::countNonZero(foregroundMask);
+      //roi.copyTo(res_out, foregroundMask);
+      res_out = diffImage.clone(); 
+      
+      if(nonZCnt<10000)
+      {        
+        ROS_INFO("The detail is OK");
+        srv.request.detailStatus = 1;
+        res.Mon_result.detail_detected = 1;
+        res.Mon_result.detail_ok = 1;
+      }
+      else
+      {
+        ROS_INFO("The hole is damaged!");
+        res.Mon_result.detail_detected = 1;
+        res.Mon_result.detail_ok = 0;
+        srv.request. detailStatus = 0;
+      }
+  }
+  if(op_id==3)
+  {
+    Mat copy_bgr_image;
+    
+    // denoising
+    cv::blur(roi,copy_bgr_image,Size(5,5));
+    // find the reflection regions (white color)
+    cv::Mat hsv_image;
+    cv::Mat mask;
+    cv::cvtColor(copy_bgr_image, hsv_image, cv::COLOR_BGR2HSV);
+    cv::inRange(hsv_image, cv::Scalar(0, 0, 255-15, 0), 
+        cv::Scalar(255, 15, 255, 0), 
+        mask);
+
+    Mat labels, stats, centroids;
+    int nLabels = connectedComponentsWithStats	(	mask, labels,stats, centroids);
+    int max_area = 0;
+    int i_max_cc = -1;
+    int lx_max_cc = 0;
+    for(int i = 1; i<nLabels; ++i)
+    {
+      float area = stats.at<int>(i,CC_STAT_AREA);
+      int lx = stats.at<int>(i,CC_STAT_LEFT);
+     // int ty = stats.at<int>(i,CC_STAT_TOP);
+     // int h = stats.at<int>(i,CC_STAT_HEIGHT);
+     // int w = stats.at<int>(i,CC_STAT_WIDTH);
+     // int rx = lx+w;
+     // int by = ty+h;
+      if(max_area< area )
+      {
+        max_area = area;
+        i_max_cc = i;
+        lx_max_cc = lx;
+      }
+    }
+    Mat only2;
+    compare(labels, i_max_cc, only2, CMP_EQ);
+    for(int i = 1; i<nLabels; ++i)
+    {
+      int lx = stats.at<int>(i,CC_STAT_LEFT);
+      if(fabs(lx-lx_max_cc)<50)
+      {
+        Mat only1;
+        compare(labels, i, only1, CMP_EQ);
+        bitwise_or(only2, only1, only2);
+      }
+    }
+    res_out = roi.clone();
+
+    Rect r = boundingRect(only2);
+    rectangle( res_out, r.tl(), r.br(), Scalar(0,255,0), 2, 8, 0 );
+    ROS_INFO("Screw length (px) %d",r.height);
+ 
+  //  Mat color_mask;
+//    cvtColor(only2,color_mask, CV_GRAY2RGB);
+//    addWeighted(color_mask, 0.4, roi, 1 - 0.4, 0, res_out);
+
+//    namedWindow( "h", CV_WINDOW_NORMAL );
+  //  imshow( "h", mask);
+    }
 }
 
 
@@ -137,25 +249,35 @@ void  Monitoring:: execute_monitoring(
         std::cout<<"Max val matching:" <<maxVal<< " Min val matching:"<< minVal << std::endl;
         std::cout<<"Match loc:[x,y]:"<<matchLoc.x<<" "<<matchLoc.y<<std::endl;
         srv.request.maxSimVal = maxVal;
-
-        cv::Rect r (matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
+        cv::Rect r;
+        if(req.ID_Operation!=3)
+        {
+          r =cv::Rect(matchLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
+        }
+        else
+        {
+           cv::Point newLoc = matchLoc;
+           newLoc.y  = 0;
+           r =cv::Rect(newLoc, Point( matchLoc.x + templ_image.cols , matchLoc.y + templ_image.rows ));
+ 
+        }
         cv::Mat roi = img_display(r).clone();
         roi_out = roi.clone();
         templ_out = templ_image.clone();
         res_out = cv::Mat::zeros( cv::Size(100,100), CV_8UC3 );
 
-        if(maxVal>0.85)
+        if(maxVal>0.83)
         {
           ROS_INFO("Template is OK detected! Start comparison according to the operation sent...");
           
-          analyzeROI(roi, templ_image, req.ID_Operation, res, res_out, srv);
+          analyzeROI(current_image,roi, templ_image, templ_mask, req.ID_Operation, res, res_out, srv);
 
           res.Im_Width = current_image.cols;
           res.Im_Height = current_image.rows;
           res.Mon_result.operation_type = (long int)req.ID_Operation;
         }
         else
-        if(maxVal<=0.85&& maxVal>0.5)
+        if(maxVal<=0.83&& maxVal>0.5)
         {
             ROS_INFO("Template is found, but the detail is probably  damaged");
             res.Im_Width = current_image.cols;

@@ -93,14 +93,14 @@ GUI_ImageViewer::GUI_ImageViewer (int argc, char** argv, QWidget * parent): QMai
   imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
       _img.step, QImage::Format_RGB888);
   imageLabelTempl->setPixmap(QPixmap::fromImage(imgToShow));
-  imageLabelTempl->resize(1.0 * imageLabelTempl->pixmap()->size());
+  imageLabelTempl->resize(0.3 * imageLabelTempl->pixmap()->size());
 
   imageLabelRoi->setPixmap(QPixmap::fromImage(imgToShow));
-  imageLabelRoi->resize(1.0 * imageLabelRoi->pixmap()->size());
+  imageLabelRoi->resize(0.3 * imageLabelRoi->pixmap()->size());
 
   
   imageLabelRes->setPixmap(QPixmap::fromImage(imgToShow));
-  imageLabelRes->resize(1.0 * imageLabelRes->pixmap()->size());
+  imageLabelRes->resize(0.3 * imageLabelRes->pixmap()->size());
 
 
 
@@ -118,7 +118,7 @@ void GUI_ImageViewer::loadNewImage()
   imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
       _img.step, QImage::Format_RGB888);
   imageLabelTempl->setPixmap(QPixmap::fromImage(imgToShow));
-  imageLabelTempl->resize(1.0 * imageLabelTempl->pixmap()->size());
+  imageLabelTempl->resize(0.3 * imageLabelTempl->pixmap()->size());
   imageLabelTempl->update();
   // update roi viewer
   _img = qnode.img_roi.clone(); 
@@ -126,7 +126,7 @@ void GUI_ImageViewer::loadNewImage()
   imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
       _img.step, QImage::Format_RGB888);
   imageLabelRoi->setPixmap(QPixmap::fromImage(imgToShow));
-  imageLabelRoi->resize(1.0 * imageLabelRoi->pixmap()->size());
+  imageLabelRoi->resize(0.3 * imageLabelRoi->pixmap()->size());
   imageLabelRoi->update();
   // update result demonstration
   _img = qnode.img_res.clone(); 
@@ -134,7 +134,7 @@ void GUI_ImageViewer::loadNewImage()
   imgToShow = QImage((uchar*) _img.data, _img.cols, _img.rows, 
       _img.step, QImage::Format_RGB888);
   imageLabelRes->setPixmap(QPixmap::fromImage(imgToShow));
-  imageLabelRes->resize(1.0 * imageLabelRes->pixmap()->size());
+  imageLabelRes->resize(0.3 * imageLabelRes->pixmap()->size());
   imageLabelRes->update();
 
 

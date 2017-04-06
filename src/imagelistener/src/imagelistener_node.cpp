@@ -135,6 +135,7 @@ public:
         cv::Mat templ;
         cv::Mat roi;
         cv::Mat result;
+        // call monitoring function
         mon.execute_monitoring(req,res,currentImage, templ, roi, result, srv);
 
         cv::imwrite("/home/tiva/catkin_ws/tmp_imgs/templ.png", templ);
@@ -142,7 +143,7 @@ public:
         cv::imwrite("/home/tiva/catkin_ws/tmp_imgs/roi.png", roi);
 
         cv::imwrite("/home/tiva/catkin_ws/tmp_imgs/result.png", result);
-        // call monitoring function
+        
         
         // send request to display
         
